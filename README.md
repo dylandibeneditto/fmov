@@ -1,2 +1,2 @@
-# fvid
-A simple, optimized way to compile video with python
+# fmov
+A performant way to create rendered video with audio through code in python.
