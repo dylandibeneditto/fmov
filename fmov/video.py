@@ -3,6 +3,7 @@ import ffmpeg
 import numpy as np
 from fmov.audio import Audio
 from PIL.Image import Image
+import time
 
 class Video:
     def __init__(
@@ -28,6 +29,7 @@ class Video:
         #self.__audio_stamps: list[Audio] = []
         self.__frame_count = 0
         self.__process = None
+        self.__process_start_time = None
 
     def start_render(self):
         self.__process = ffmpeg.input(
@@ -44,6 +46,7 @@ class Video:
             loglevel="quiet",
             crf=self.crf
         ).overwrite_output().run_async(pipe_stdin=True)
+        self.__process_start_time = time.time()
 
     def pipe(self, image: Image):
         """
@@ -71,11 +74,13 @@ class Video:
         self.__process.stdin.write(frame_bytes)
         self.__frame_count += 1
 
-    def render(self):
+    def render(self, log_duration=True):
         if self.__process:
             self.__process.stdin.close()
             self.__process.wait()
             self.__process = None
+        if log_duration:
+            print(f"Completed in {time.time()-self.__process_start_time:.2f}s")
 
     def seconds_to_frame(self, time: float) -> int:
         return int(time * self.framerate)
