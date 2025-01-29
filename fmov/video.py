@@ -4,6 +4,7 @@ import ffmpeg
 from numpy.typing import NDArray
 from fmov.audio import Audio
 from PIL.Image import Image
+from rich.progress import track
 
 class Video:
     def __init__(
@@ -52,8 +53,10 @@ class Video:
 
         self.__frames.append(image)
 
-    def render(self, quick_image: bool = False, quick_frames: bool = False):
-
+    def render(self, quick_image: bool = False, quick_frames: bool = False, log_progress: bool = True):
+        """
+        
+        """
         image_multiplier = self.__quick_image_multiplier if quick_image else 1
         frame_multiplier = self.__quick_frame_multiplier if quick_frames else 1
         
@@ -73,7 +76,8 @@ class Video:
             crf=self.crf
         ).overwrite_output().run_async(pipe_stdin=True)
         
-        for (i, frame) in enumerate(self.__frames):
+        frame_list = track(enumerate(self.__frames), "Rendering...", total=len(self.__frames)) if log_progress else enumerate(self.__frames)
+        for (i, frame) in frame_list:
             if i % frame_multiplier == 0:
                 final_frame = frame
 
@@ -87,3 +91,4 @@ class Video:
         # end the pipe process
         process.stdin.close()
         process.wait()
+
