@@ -4,6 +4,7 @@ import numpy as np
 from PIL.Image import Image
 import time
 import subprocess
+import os
 
 class Video:
     """fmov.Video
@@ -120,11 +121,12 @@ class Video:
 
         subprocess.run(cmd, check=True)
 
-    def render(self, log_duration: bool = True):
+    def render(self, prompt_deletion: bool = True, log_duration: bool = True):
         """Renders and outputs the final video to the determined file path
         
         Args:
             log_duration (bool): whether to print out the time it took to render on completion, default is true
+            prompt_deletion (bool): prompts the user whether they want to delete the temporary file... make sure everything is right before this is disabled
         """
         if self.__process:
             self.__process.stdin.close()
@@ -133,6 +135,12 @@ class Video:
             self.attach_audio()
         if log_duration:
             print(f"Completed in {time.time()-self.__process_start_time:.2f}s")
+        if prompt_deletion:
+            prompt = input(f"Would you like to delete '{self.__temp_path}'? Y/n ")
+            if "Y" not in prompt:
+                return
+            print(f"Deleting {self.__temp_path}...")
+        os.remove(self.__temp_path)
 
     def seconds_to_frame(self, time: float) -> int:
         """Finds the frame which will be showing at `n` seconds

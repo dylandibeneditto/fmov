@@ -60,4 +60,4 @@ for i in track(range(total_frames), "Rendering...", total=total_frames):
 #video.sound_at_time(time=1000, path="./mysound.wav")
 
 # render the video 🥳
-video.render()
+video.render(prompt_deletion=False)
