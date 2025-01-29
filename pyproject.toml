@@ -1,0 +1,17 @@
+[project]
+name = "fmov"
+version = "0.1.0"
+description = "A performant way to create rendered video with audio in Python"
+authors = [
+    {name = "Dylan DiBeneditto",email = "dibenedittod@gmail.com"}
+]
+license = {text = "MIT"}
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
