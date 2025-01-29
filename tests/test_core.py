@@ -3,7 +3,7 @@ from PIL import Image, ImageDraw
 import random
 from rich.progress import track
 
-# create video with pipe
+# initialize the video
 video = fmov.Video((1920,1080), framerate=30, path="./video.mp4")
 
 # position and velocity of the dvd logo
@@ -24,7 +24,7 @@ dvd_img = dvd_img.resize((img_width, img_height))
 hue = 0
 
 # the frame index 4 minutes into the video
-total_frames = video.minutes_to_frame(0.5)
+total_frames = video.minutes_to_frame(5)
 
 for i in track(range(total_frames), "Rendering...", total=total_frames):
     # initializing PIL variables
