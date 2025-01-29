@@ -4,11 +4,12 @@ import random
 from rich.progress import track
 
 # create video with pipe
-video = fmov.Video((1920,1080), framerate=60, path="./video.mp4")
+video = fmov.Video((1920,1080), framerate=30, path="./video.mp4")
 
 # position and velocity of the dvd logo
 x,y = (0,0)
-vx, vy = (video.framerate//2,video.framerate//2)
+v = 180//video.framerate
+vx, vy = (v,v)
 
 # create dvd image as a PIL image
 dvd_img = Image.open("./tests/dvd-logo.png")
@@ -23,7 +24,7 @@ dvd_img = dvd_img.resize((img_width, img_height))
 hue = 0
 
 # the frame index 4 minutes into the video
-total_frames = video.minutes_to_frame(4)
+total_frames = video.minutes_to_frame(0.5)
 
 for i in track(range(total_frames), "Rendering...", total=total_frames):
     # initializing PIL variables
