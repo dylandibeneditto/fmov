@@ -40,7 +40,7 @@ class Video:
         self.render_preset = render_preset
         self.crf = crf
         self.audio_bitrate = audio_bitrate
-        self.__audio_stamps: list[Tuple[int, str, float]] = [(23000, "./tests/audio.wav", 0.4)]
+        self.__audio_stamps: set[Tuple[int, str, float]] = set([])
         """tuple index meanings:
             0 (int): time in ms of the audio
             1 (str): path to the sound effect
@@ -50,7 +50,7 @@ class Video:
         self.__process = None
         self.__process_start_time = time.time() # will be set later anyways, set now to suppress errors
 
-    def start_render(self):
+    def __start_render(self):
         self.__process = ffmpeg.input(
             "pipe:",
             format="rawvideo",
@@ -67,6 +67,64 @@ class Video:
         ).overwrite_output().run_async(pipe_stdin=True)
         self.__process_start_time = time.time()
 
+    def sound_at_millisecond(self, time: int, path: str, volume: float = 0.4):
+        """Inserts a sound at `n` milliseconds
+        
+        Args:
+            time (int): time in milliseconds
+            path (str): path to the audio file
+            volume (float): volume of the audio (between 0.0-1.0)
+
+        Raises:
+            FileNotFoundError: path to audio file does not exist
+        """
+        if not os.path.exists(path):
+            raise FileNotFoundError(f"audio file '{path}' does not exist")
+
+        self.__audio_stamps.add((int(time), str(path), max(float(volume),0.0)))
+
+    def sound_at_frame(self, frame: int, path: str, volume: float = 0.4):
+        """Inserts a sound at `n` frames
+        
+        Args:
+            frame (int): frame to insert the sound
+            path (str): path to the audio file
+            volume (float): volume of the audio (between 0.0-1.0)
+
+        Raises:
+            FileNotFoundError: path to audio file does not exist
+        """
+
+        self.sound_at_millisecond(self.frame_to_milliseconds(frame), path, volume)
+
+    def sound_at_second(self, time: float, path: str, volume: float = 0.4):
+        """Inserts a sound at `n` seconds
+        
+        Args:
+            time (float): time in seconds
+            path (str): path to the audio file
+            volume (float): volume of the audio (between 0.0-1.0)
+
+        Raises:
+            FileNotFoundError: path to audio file does not exist
+        """
+
+        self.sound_at_millisecond(int(time*1000), path, volume)
+
+    def sound_at_minute(self, time: float, path: str, volume: float = 0.4):
+        """Inserts a sound at `n` minutes
+        
+        Args:
+            time (float): time in minutes
+            path (str): path to the audio file
+            volume (float): volume of the audio (between 0.0-1.0)
+
+        Raises:
+            FileNotFoundError: path to audio file does not exist
+        """
+
+        self.sound_at_second(time*60, path, volume)
+
     def pipe(self, image: Image):
         """Appends a PIL `Image` as a frame to the video
 
@@ -80,13 +138,13 @@ class Video:
             raise TypeError(f"Argument of type {type(image)} cannot be assigned to type PIL.Image")
 
         if self.__process is None:
-            self.start_render()
+            self.__start_render()
 
         frame_bytes = np.array(image, dtype=np.uint8).tobytes()
         self.__process.stdin.write(frame_bytes)
         self.__frame_count += 1
 
-    def attach_audio(self):
+    def __attach_audio(self):
         cmd = ["ffmpeg", "-y", "-i", self.__temp_path]
 
         filter_complex_parts = []
@@ -132,7 +190,7 @@ class Video:
             self.__process.stdin.close()
             self.__process.wait()
             self.__process = None
-            self.attach_audio()
+            self.__attach_audio()
         if log_duration:
             print(f"Completed in {time.time()-self.__process_start_time:.2f}s")
         if prompt_deletion:
@@ -152,7 +210,7 @@ class Video:
             ValueError: `time` is not assignable to type `float`
 
         Returns:
-        int: the frame in the video at `n` seconds
+            int: the frame in the video at `n` seconds
         """
         time = float(time)
 
@@ -168,7 +226,7 @@ class Video:
             ValueError: `time` is not assignable to type `float`
 
         Returns:
-        int: the frame in the video at `n` minutes
+            int: the frame in the video at `n` minutes
         """
         return self.seconds_to_frame(time*60)
 
@@ -182,9 +240,55 @@ class Video:
             ValueError: `time` is not assignable to type `float`
 
         Returns:
-        int: the frame in the video at `n` milliseconds
+            int: the frame in the video at `n` milliseconds
         """
         return self.seconds_to_frame(time/1000)
+
+    def frame_to_milliseconds(self, frame: int) -> int:
+        """Finds the time in milliseconds that the `n`th frame will begin at
+        
+        Args:
+            frame (int): the frame where the time will be found
+
+        Raises:
+            ValueError: `frame` is not assignable to type `int`
+
+        Returns:
+            int: the time in milliseconds where the frame started
+        """
+        frame = int(frame)
+
+        return int(frame/self.framerate * 1000)
+
+    def frame_to_seconds(self, frame: int) -> float:
+        """Finds the time in seconds that the `n`th frame will begin at
+        
+        Args:
+            frame (int): the frame where the time will be found
+
+        Raises:
+            ValueError: `frame` is not assignable to type `int`
+
+        Returns:
+            float: the time in seconds where the frame started
+        """
+
+        return self.frame_to_milliseconds(frame) / 1000
+
+    def frame_to_minutes(self, frame: int) -> float:
+       """Finds the time in minutes that the `n`th frame will begin at
+       
+       Args:
+           frame (int): the frame where the time will be found
+
+       Raises:
+           ValueError: `frame` is not assignable to type `int`
+
+       Returns:
+           float: the time in minutes where the frame started
+       """
+
+       return self.frame_to_seconds(frame) / 60
 
     def __get_temp_path(self, path: str):
         extension = "."+(path.split(".")[-1])

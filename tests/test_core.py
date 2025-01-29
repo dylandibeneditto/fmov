@@ -14,7 +14,7 @@ vx, vy = (v,v)
 # create dvd image as a PIL image
 dvd_img = Image.open("./tests/dvd-logo.png")
 
-# values to resize the dvd image for the video
+# calculation for the new size of the dvd logo while preserving aspect ratio
 img_height = 150
 aspect_ratio = dvd_img.width / dvd_img.height
 img_width = int(img_height * aspect_ratio)
@@ -24,12 +24,18 @@ dvd_img = dvd_img.resize((img_width, img_height))
 hue = 0
 
 # the frame index 4 minutes into the video
-total_frames = video.minutes_to_frame(0.5)
+# could also be found with...
+# video.milliseconds_to_frame(60000)
+# vidoe.seconds_to_frame(60)
+total_frames = video.minutes_to_frame(1)
 
+# using rich.track to keep track of the progress, does a good job of predicting ETA usually
+# keep in mind that this only counts the loading of the video, the audio comes afterward but
+# usually is negligable unless you have a large file with many effects
 for i in track(range(total_frames), "Rendering...", total=total_frames):
-    # initializing PIL variables
+    # initializing the common PIL variables
     image = Image.new("RGB", (video.width, video.height), "#000000")
-    draw = ImageDraw.Draw(image)
+    #draw = ImageDraw.Draw(image) # usually you need this to draw shapes and text, however this example doesnt require it
 
     # adding the dvd image
     # finding the fill color based on the hue, turn it into an image, and use the dvd image as a mask
@@ -46,18 +52,17 @@ for i in track(range(total_frames), "Rendering...", total=total_frames):
         vy *= -1
         bumped = True
 
+    # play a sound effect and shift the hue of the logo on a bump
     if bumped:
+        video.sound_at_frame(frame=i, path="./tests/audio.wav")
         hue = (hue+random.randint(20,60))%255
 
     # position updates
     x += vx
     y += vy
 
-    #video.sound_at_frame(frame=i, path="./mysound.wav")
-    # append the frame to the video
+    # finally, append the frame to the end of the video
     video.pipe(image)
 
-#video.sound_at_time(time=1000, path="./mysound.wav")
-
 # render the video 🥳
-video.render(prompt_deletion=False)
+video.render(prompt_deletion=False) # prompt deletion just means that it doesnt ask me to delete the temporary file
