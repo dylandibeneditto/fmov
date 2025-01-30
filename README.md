@@ -1,7 +1,8 @@
 # fmov
 A performant way to create rendered video with Python by leveraging `ffmpeg` and `PIL`.
 
-# Benchmarks
+# Rough Benchmarks
+time efficiency = video time / render time
 | FPS | RESOLUTION | VIDEO TIME | RENDER TIME | TIME EFFICIENCY |
 | --- | ---------- | ---------- | ----------- | --------------- |
 | 1   | 1920x1080  | 30s        | 0.381s      | 78.7x           |
@@ -11,13 +12,14 @@ A performant way to create rendered video with Python by leveraging `ffmpeg` and
 | 60  | 1920x1080  | 30s        | 8.990s      | 3.34x           |
 | 100 | 1920x1080  | 30s        | 14.492s     | 2.07x           |
 | 120 | 1920x1080  | 30s        | 17.960s     | 1.67x           |
-> Rendered on a M3 MacBook Air
-> Using the [Hello World]() example
-> time efficiency = video time / render time
+---
+Rendered on a M3 MacBook Air using the [Hello World]() example
 
 # Installing
 Install fmov via pip:
-```pip install fmov```
+```
+pip install fmov
+```
 
 ## Dependencies
 Make sure to have ffmpeg installed on your system and executable from the terminal
@@ -29,7 +31,9 @@ choco install ffmpeg        # Windows
 [Downloading FFmpeg](https://ffmpeg.org/download.html)
 
 Install PIL, as that is what you will need to pass frames to fmov
-```pip install pillow```
+```
+pip install pillow
+```
 
 # Tutorial
 Creating the `Video` object:
@@ -74,5 +78,5 @@ Rendering Video:
 video.render()
 ```
 > [!NOTE]
-> anytime the program has to delete the temporary file, fmov will prompt the user unless `prompt_deletion` is disabled as an argument in the `video.render` method
+> Anytime the program has to delete the temporary file, fmov will prompt the user unless `prompt_deletion` is disabled as an argument in the `video.render` method.
 
