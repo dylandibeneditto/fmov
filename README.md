@@ -3,12 +3,12 @@ A performant way to create rendered video with Python by leveraging `ffmpeg` and
 
 # Rough Benchmarks
 time efficiency = video time / render time
-| FPS | RESOLUTION | VIDEO TIME | RENDER TIME | TIME EFFICIENCY |
+| FPS | Resolution | Video Time | Render Time | Video Time / Render Time |
 | --- | ---------- | ---------- | ----------- | --------------- |
-| 1   | 1920x1080  | 30s        | 0.381s      | 78.7x           |
-| 12  | 1920x1080  | 30s        | 1.995s      | 15x             |
-| 24  | 1920x1080  | 30s        | 3.751s      | 8x              |
-| 30  | 1920x1080  | 30s        | 4.541s      | 6.6x            |
+| 1   | 1920x1080  | 30s        | 0.381s      | 78.74x          |
+| 12  | 1920x1080  | 30s        | 1.995s      | 15.00x          |
+| 24  | 1920x1080  | 30s        | 3.751s      | 8.00x           |
+| 30  | 1920x1080  | 30s        | 4.541s      | 6.60x           |
 | 60  | 1920x1080  | 30s        | 8.990s      | 3.34x           |
 | 100 | 1920x1080  | 30s        | 14.492s     | 2.07x           |
 | 120 | 1920x1080  | 30s        | 17.960s     | 1.67x           |
