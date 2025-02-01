@@ -23,4 +23,3 @@ video.sound_at_millisecond(time=4000, path="./tests/audio.wav", volume=1.0)
 video.sound_at_second(time=25, path="./tests/audio.wav")
 
 video.render(prompt_deletion=False)
-
