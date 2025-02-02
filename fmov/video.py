@@ -1,10 +1,10 @@
-from typing import Tuple
 import ffmpeg
 import numpy as np
 from PIL.Image import Image
 import time
 import subprocess
 import os
+import shutil
 
 class Video:
     """fmov.Video
@@ -21,7 +21,7 @@ class Video:
     """
     def __init__(
         self,
-        dimensions: Tuple[int, int] = (1920, 1080),
+        dimensions: tuple[int, int] = (1920, 1080),
         framerate: int = 30,
         path: str = "./video.mp4",
         vcodec: str = "libx264",
@@ -40,7 +40,7 @@ class Video:
         self.render_preset = render_preset
         self.crf = crf
         self.audio_bitrate = audio_bitrate
-        self.__audio_stamps: set[Tuple[int, str, float]] = set([])
+        self.__audio_stamps: set[tuple[int, str, float]] = set([])
         """tuple index meanings:
             0 (int): time in ms of the audio
             1 (str): path to the sound effect
@@ -190,7 +190,10 @@ class Video:
             self.__process.stdin.close()
             self.__process.wait()
             self.__process = None
-            self.__attach_audio()
+            if len(self.__audio_stamps) > 0:
+                self.__attach_audio()
+            else:
+                shutil.copy(self.__temp_path, self.__path)
         if log_duration:
             print(f"Completed in {time.time()-self.__process_start_time:.2f}s")
         if prompt_deletion:
