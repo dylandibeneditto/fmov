@@ -1,10 +1,11 @@
-import fmov
+from fmov import Video, Frame, Text, Img, PILImg
+from PIL import Image
 
 video = Video((1920,1080), framerate=30, path="./video2.mp4")
 
 for i in range(video.seconds_to_frame(30)):
     # background can either be hex or path to an image
-    frame = Frame(background="#000000", (video.width, video.height), colorspace="RGB")
+    frame = Frame(background="#000000", dimensions=(video.width, video.height), colorspace="RGB")
 
     # anchor will be one of the following:
     # topleading    top    toptrailing
@@ -22,4 +23,11 @@ for i in range(video.seconds_to_frame(30)):
     # (100, None) resizes to 100 pixels wide
     # (None, 100) resizes to 100 pixels tall
     # (None, None) wont resize the image
-    logo = Image(path="./logo.png", position=(10,10), size=(100, None), transparent=True)
+    logo = Img(path="./logo.png", position=(10,10), size=(100, None), transparent=True)
+    frame.add(logo)
+
+    image = Image.new("RGB", (video.width,video.height), "#00ff00")
+    image_obj = PILImg(ref=image, position=(0,0))
+    frame.add(image_obj)
+
+    video.pipe(frame)
