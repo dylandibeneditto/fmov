@@ -31,15 +31,17 @@ class Text:
         self.truncate_with_ellipsis = truncate_with_ellipsis
 
     def get_str_width(self, s: str) -> float:
-        return self.get_font().getmask(s).getbbox()[2]
+        return max(self.get_font().getlength(i) for i in s.split("\n"))
+
     def get_str_height(self, s: str) -> float:
         descent = 0
-        # font = self.get_font()
-        # if type(font) != ImageFont.ImageFont:
-            # descent = font.getmetrics()[1]
+        font = self.get_font()
+        if type(font) == ImageFont.FreeTypeFont:
+            descent = font.getmetrics()[1]
         return self.get_font().getmask(s).getbbox()[3] + descent
+
     def get_width(self) -> float:
-        return self.get_str_width(max(self.display_text().split('\n')))
+        return self.get_str_width(self.display_text())
 
     def get_height(self) -> float:
         return self.get_str_height(self.display_text())
@@ -76,40 +78,29 @@ class Text:
         if self.max_width == 0:
             return self.text
 
-        split_indices = []
-        splitter = " "
-
+        font = self.get_font()
+        words = self.text.split(" ") if self.break_line == "word" else list(self.text)
         result = ""
-
-        if self.break_line == "letters":
-            splitter = ""
-        elif self.break_line == "punctuation":
-            splitter = ",|;|.|!|?|:"
-
-        for (n, i) in enumerate(self.text):
-            delimiters = splitter.split("|")
-            for j in delimiters:
-                if i == j:
-                    split_indices.append(n+1)
-
-        line_count = 0
+        line = ""
         current_x = 0
-        for (n, i) in enumerate(split_indices):
-            substr = self.text[(split_indices[n-1] if n != 0 else 0):i]
-            substr_width = self.get_str_width(substr)
+        line_count = 0
 
-            if current_x + substr_width > self.max_width:
+        for word in words:
+            word_width = font.getlength(word + " ")
+
+            if current_x + word_width > self.max_width:
                 if line_count == self.line_limit:
                     if self.truncate_with_ellipsis:
-                        result = result[:-3]+"..."
+                        result = result.rstrip() + "..."
                     break
-                substr = f"\n{substr}"
-
-            result += substr
-            current_x += substr_width
-
-            if '\n' in substr:
-                current_x = 0
+                result += line.rstrip() + "\n"
+                line = word + " "
+                current_x = word_width
                 line_count += 1
+            else:
+                line += word + " "
+                current_x += word_width
+
+        result += line.rstrip()
 
         return result
