@@ -14,10 +14,9 @@ for i in range(video.seconds_to_frame(30)):
 
     # truncation mode will be one of the following:
     # letter    word    punctuation
-    frame_counter = Text(text=f"frame: {i} asldkfj alksjf laskjdflaks dflakjsdfalkjsdflasjd flakjsdflkajs fdlkjalsdjf ", path="./Inter-VariableFont_opsz,wght.ttf", size=18, position=(1920//2, 1080//2), color="#ffffff", anchor="center", max_width=300)
+    frame_counter = Text(text=f"frame: {i*1000000}", path="./Inter-VariableFont_opsz,wght.ttf", size=40, position=(1920//2, 1080//2), color="#ffffff", anchor="center", max_width=300)
     frame_counter.line_limit = 10
-    frame_counter.break_line = "word"
-    print(frame_counter.get_width(), frame_counter.get_height())
+    frame_counter.break_line = "letter"
     ImageDraw.Draw(frame.image).rectangle((1920//2-150,1080//2-150,1920//2+150,1080//2+150), fill="#ff0000")
     frame.add(frame_counter)
 

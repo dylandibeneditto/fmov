@@ -78,7 +78,7 @@ class Text:
         if self.max_width == 0:
             return self.text
 
-        font = self.get_font()
+        replace = " " if self.break_line=="word" else ""
         words = self.text.split(" ") if self.break_line == "word" else list(self.text)
         result = ""
         line = ""
@@ -86,21 +86,19 @@ class Text:
         line_count = 0
 
         for word in words:
-            word_width = font.getlength(word + " ")
+            line = word + replace
+            word_width = self.get_str_width(line)
 
             if current_x + word_width > self.max_width:
                 if line_count == self.line_limit:
                     if self.truncate_with_ellipsis:
-                        result = result.rstrip() + "..."
+                        result = result.rstrip()[:-3] + "..."
                     break
-                result += line.rstrip() + "\n"
-                line = word + " "
-                current_x = word_width
+                result += "\n"
+                current_x = 0
                 line_count += 1
-            else:
-                line += word + " "
-                current_x += word_width
 
-        result += line.rstrip()
+            current_x += word_width
+            result += line
 
         return result
