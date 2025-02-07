@@ -6,7 +6,7 @@ import os
 class Text:
     def __init__(self,
                  text: str,
-                 position: tuple[int, int],
+                 position: tuple[int, int] = (0,0),
                  path: str = "",
                  size: int = 18,
                  color: str = "#000000",
@@ -30,15 +30,22 @@ class Text:
         self.line_limit = line_limit
         self.truncate_with_ellipsis = truncate_with_ellipsis
 
+    def get_metrics(self):
+        font = self.get_font()
+        if type(font) == ImageFont.FreeTypeFont:
+            return font.getmetrics()
+        else:
+            return (0,0)
+
     def get_str_width(self, s: str) -> float:
         return max(self.get_font().getlength(i) for i in s.split("\n"))
 
     def get_str_height(self, s: str) -> float:
-        descent = 0
-        font = self.get_font()
-        if type(font) == ImageFont.FreeTypeFont:
-            descent = font.getmetrics()[1]
-        return self.get_font().getmask(s).getbbox()[3] + descent
+        # TODO: fix the issue with y position being incorrect
+        ascent, descent = self.get_metrics()
+        height = self.get_font().getmask(s).getbbox()[3]
+        descent_height = height + descent
+        return height - descent + ascent
 
     def get_width(self) -> float:
         return self.get_str_width(self.display_text())
@@ -56,7 +63,7 @@ class Text:
             return ImageFont.load_default(size=self.size)
 
     def display_pos(self) -> tuple[int, int]:
-        x,y = (self.x, self.y)
+        x,y = (self.x, self.y+self.get_metrics()[1])
 
         if "top" in self.anchor:
             pass

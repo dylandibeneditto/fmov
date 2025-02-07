@@ -1,5 +1,4 @@
-from fmov import Video, Frame, Text
-from PIL import ImageDraw
+from fmov import Video, Frame, Text, Box
 
 video = Video((1920,1080), framerate=30, path="./video2.mp4")
 
@@ -12,13 +11,11 @@ for i in range(video.seconds_to_frame(30)):
     # leading       center trailing
     # bottomleading bottom bottomtrailing
 
-    # truncation mode will be one of the following:
-    # letter    word    punctuation
-    frame_counter = Text(text=f"frame: {i*1000000}", path="./Inter-VariableFont_opsz,wght.ttf", size=40, position=(1920//2, 1080//2), color="#ffffff", anchor="center", max_width=300)
+    frame_counter = Text(text=f"frame: {i*1000000}", path="./Inter-VariableFont_opsz,wght.ttf", size=40, color="#ffffff", max_width=300)
     frame_counter.line_limit = 10
     frame_counter.break_line = "letter"
-    ImageDraw.Draw(frame.image).rectangle((1920//2-150,1080//2-150,1920//2+150,1080//2+150), fill="#ff0000")
-    frame.add(frame_counter)
+    frame_box = Box(position=(0,0), corner_radius=8.0, background="#ff0000", content=(frame_counter, 10))
+    frame.add(frame_box)
 
 
     # put in None for values in the size where it will be automatically found
