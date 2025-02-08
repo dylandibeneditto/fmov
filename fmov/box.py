@@ -29,51 +29,41 @@ class Box:
         self.outline_width = outline_width
         self.content = content
         
-    def get_width(self):
-        width = 0
+    def get_size(self):
+        width, height = (0,0)
         if self.content[0] != None:
             if type(self.content[0]) == Text:
-                width = self.content[0].get_width()
+                width, height = self.content[0].get_size()
         else:
-            width = self.w
+            width, height = (self.w, self.h)
         if type(self.content[1]) == int:
             width += self.content[1] * 2
-        elif type(self.content[1]) == tuple[int,int,int,int]:
-            width += self.content[1][0] + self.content[1][2]
-        return width
-
-    def get_height(self):
-        height = 0
-        if self.content[0] != None:
-            if type(self.content[0]) == Text:
-                height = self.content[0].get_height()
-        else:
-            height = self.h
-        if type(self.content[1]) == int:
             height += self.content[1] * 2
         elif type(self.content[1]) == tuple[int,int,int,int]:
+            width += self.content[1][0] + self.content[1][2]
             height += self.content[1][1] + self.content[1][3]
-        return height
+        return (width, height)
 
     def display_end_pos(self):
-        return (self.display_pos()[0]+self.get_width(), self.display_pos()[1]+self.get_height())
+        size = self.get_size()
+        return (self.display_pos()[0]+size[0], self.display_pos()[1]+size[1])
 
     def display_pos(self):
         x,y = (self.x, self.y)
-
+        size = self.get_size()
         if "top" in self.anchor:
             pass
         elif "bottom" in self.anchor:
-            y -= int(self.get_height())
+            y -= int(size[1])
         else:
-            y -= self.get_height()//2
+            y -= size[1]//2
 
         if "leading" in self.anchor:
             pass
         elif "trailing" in self.anchor:
-            x -= int(self.get_width())
+            x -= int(size[0])
         else:
-            x -= self.get_width()//2
+            x -= size[0]//2
 
         return (int(x),int(y))
 

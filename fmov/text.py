@@ -1,4 +1,4 @@
-from PIL import ImageFont
+from PIL import ImageFont, Image, ImageDraw
 import os
 
 # frame_counter = Text(text=f"frame: {i}", font_path="./something.ttf", size=18, position=(1920//2, 1080//2), color="#ffffff", opacity=0.4, anchor="center", max_width=200, break_line="word", line_limit=2)
@@ -30,13 +30,6 @@ class Text:
         self.line_limit = line_limit
         self.truncate_with_ellipsis = truncate_with_ellipsis
 
-    def get_metrics(self):
-        font = self.get_font()
-        if type(font) == ImageFont.FreeTypeFont:
-            return font.getmetrics()
-        else:
-            return (0,0)
-
     def get_lines(self):
         text = self.display_text()
         result = 1
@@ -45,21 +38,20 @@ class Text:
             result += 1
         return result
 
-    def get_str_width(self, s: str) -> float:
-        return max(self.get_font().getlength(i) for i in s.split("\n"))
+    def get_str_size(self, s: str) -> tuple[float, float]:
+        draw = ImageDraw.Draw(Image.new("RGBA", (0,0), (255, 255, 255, 0)))
 
-    def get_str_height(self, s: str) -> float:
-        descent = 0
         font = self.get_font()
-        if type(font) == ImageFont.FreeTypeFont:
-            descent = font.getmetrics()[1] // 2
-        return (self.get_font().getmask(s).getbbox()[3]+descent)*self.get_lines()
 
-    def get_width(self) -> float:
-        return self.get_str_width(self.display_text())
+        descent = 0
+        if type(font) != ImageFont.ImageFont:
+            descent = font.getmetrics()[1]
 
-    def get_height(self) -> float:
-        return self.get_str_height(self.display_text())
+        text_width, text_height = draw.textbbox((0, 0), s, font=font)[2:4]
+        return (text_width, text_height+descent)
+
+    def get_size(self) -> tuple[float, float]:
+        return self.get_str_size(self.display_text())
 
     def get_font(self) -> ImageFont.FreeTypeFont | ImageFont.ImageFont:
         if self.path != "":
@@ -72,23 +64,20 @@ class Text:
 
     def display_pos(self) -> tuple[int, int]:
         x, y = (self.x, self.y)
-        ascent, _ = self.get_metrics()
 
         if "top" in self.anchor:
             pass
         elif "bottom" in self.anchor:
-            y -= int(self.get_height())
+            y -= int(self.get_size()[1])
         else:
-            y -= self.get_height() // 2
-
-        y -= ascent // 4
+            y -= self.get_size()[1] // 2
 
         if "leading" in self.anchor:
             pass
         elif "trailing" in self.anchor:
-            x -= int(self.get_width())
+            x -= int(self.get_size()[0])
         else:
-            x -= self.get_width() // 2
+            x -= self.get_size()[0] // 2
 
         return (int(x), int(y))
 
@@ -105,7 +94,7 @@ class Text:
 
         for word in words:
             line = word + replace
-            word_width = self.get_str_width(line)
+            word_width = self.get_str_size(line)[0]
 
             if current_x + word_width > self.max_width:
                 if line_count == self.line_limit:
