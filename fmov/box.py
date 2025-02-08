@@ -5,7 +5,8 @@ class Box:
         self,
         position: tuple[int, int],
         background: str,
-        size: tuple[int, int] = (0,0),
+        width: int = 0,
+        height: int = 0,
         corner_radius: float = 0,
         corners: tuple[bool, bool, bool, bool] = (True, True, True, True),
         anchor: str = "topleading",
@@ -17,8 +18,8 @@ class Box:
     ):
         self.x = position[0]
         self.y = position[1]
-        self.w = size[0]
-        self.h = size[1]
+        self.w = width
+        self.h = height
         self.background = background
         self.corner_radius = corner_radius
         self.corners = corners

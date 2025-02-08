@@ -11,7 +11,7 @@ class Text:
                  size: int = 18,
                  color: str = "#000000",
                  opacity: float = 1.0,
-                 anchor: str = "leading",
+                 anchor: str = "topleading",
                  max_width: int = 0,
                  break_line: str = "word",
                  line_limit: int = 1,
@@ -37,15 +37,23 @@ class Text:
         else:
             return (0,0)
 
+    def get_lines(self):
+        text = self.display_text()
+        result = 1
+        while "\n" in text:
+            text = text.replace("\n","")
+            result += 1
+        return result
+
     def get_str_width(self, s: str) -> float:
         return max(self.get_font().getlength(i) for i in s.split("\n"))
 
     def get_str_height(self, s: str) -> float:
-        # TODO: fix the issue with y position being incorrect
-        ascent, descent = self.get_metrics()
-        height = self.get_font().getmask(s).getbbox()[3]
-        descent_height = height + descent
-        return height - descent + ascent
+        descent = 0
+        font = self.get_font()
+        if type(font) == ImageFont.FreeTypeFont:
+            descent = font.getmetrics()[1] // 2
+        return (self.get_font().getmask(s).getbbox()[3]+descent)*self.get_lines()
 
     def get_width(self) -> float:
         return self.get_str_width(self.display_text())
@@ -63,23 +71,26 @@ class Text:
             return ImageFont.load_default(size=self.size)
 
     def display_pos(self) -> tuple[int, int]:
-        x,y = (self.x, self.y+self.get_metrics()[1])
+        x, y = (self.x, self.y)
+        ascent, _ = self.get_metrics()
 
         if "top" in self.anchor:
             pass
         elif "bottom" in self.anchor:
             y -= int(self.get_height())
         else:
-            y -= self.get_height()//2
+            y -= self.get_height() // 2
+
+        y -= ascent // 4
 
         if "leading" in self.anchor:
             pass
         elif "trailing" in self.anchor:
             x -= int(self.get_width())
         else:
-            x -= self.get_width()//2
+            x -= self.get_width() // 2
 
-        return (int(x),int(y))
+        return (int(x), int(y))
 
     def display_text(self) -> str:
         if self.max_width == 0:

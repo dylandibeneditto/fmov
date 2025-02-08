@@ -11,11 +11,12 @@ for i in range(video.seconds_to_frame(30)):
     # leading       center trailing
     # bottomleading bottom bottomtrailing
 
-    frame_counter = Text(text=f"frame: {i*1000000}", path="./Inter-VariableFont_opsz,wght.ttf", size=40, color="#ffffff", max_width=300)
+    frame_counter = Text(text=f"|frame: {i}", position=(100,100), path="./Inter-VariableFont_opsz,wght.ttf", size=80, color="#ffffff", max_width=10)
     frame_counter.line_limit = 10
     frame_counter.break_line = "letter"
-    frame_box = Box(position=(0,0), corner_radius=8.0, background="#ff0000", content=(frame_counter, 10))
+    frame_box = Box(position=(100,100), width=100, height=100, corner_radius=8.0, background="#ff0000")
     frame.add(frame_box)
+    frame.add(frame_counter)
 
 
     # put in None for values in the size where it will be automatically found
