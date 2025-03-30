@@ -1,6 +1,6 @@
 # fmov
 
-![fmov logo](https://github.com/dylandibeneditto/fmov/blob/main/logo.svg?raw=true)
+![fmov logo](https://github.com/dylandibeneditto/fmov/blob/main/logo.png?raw=true)
 
 A performant way to create rendered video with Python by leveraging `ffmpeg` and `PIL`.
 
@@ -38,11 +38,8 @@ choco install ffmpeg        # Windows
 
 [Downloading FFmpeg](https://ffmpeg.org/download.html)
 
-Install PIL, as that is what you will need to pass frames to fmov
-
-```
-pip install pillow
-```
+> [!NOTE]
+> PIL will also be installed with fmov through pip as a dependency. (unless its already installed)
 
 # Tutorial
 
