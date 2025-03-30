@@ -1,6 +1,6 @@
 # fmov
 
-![fmov logo](https://github.com/dylandibeneditto/fmov/blob/main/logo.png)
+![fmov logo](https://github.com/dylandibeneditto/fmov/blob/main/logo.png?raw=true)
 
 A performant way to create rendered video with Python by leveraging `ffmpeg` and `PIL`.
 
