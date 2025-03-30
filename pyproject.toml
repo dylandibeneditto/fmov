@@ -1,7 +1,7 @@
 [project]
 name = "fmov"
-version = "0.1.0"
-description = "A performant way to create rendered video with audio in Python"
+version = "0.1.1"
+description = "A simple, optimized way to programmatically create video with python"
 authors = [
     {name = "Dylan DiBeneditto",email = "dibenedittod@gmail.com"}
 ]
@@ -9,6 +9,7 @@ license = {text = "MIT"}
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "pillow"
 ]
 
 

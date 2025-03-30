@@ -1,7 +1,7 @@
 # fmov
 
 <div align="center">
-    <img src="./logo.png" height="300">
+    <img src="https://github.com/dylandibeneditto/fmov/blob/main/logo.png?raw=true" height="300">
 </div>
 
 A performant way to create rendered video with Python by leveraging `ffmpeg` and `PIL`.
