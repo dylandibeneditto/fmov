@@ -300,3 +300,9 @@ class Video:
     def set_path(self, path: str):
         self.__path = path
         self.__temp_path = self.__get_temp_path(path)
+
+    def __repr__(self):
+        return f"fmov.Video({self.width}, {self.height}, {self.framerate}, {self.__path})"
+    
+    def __str__(self):
+        return f"Video at {self.__path} with dimensions {self.width}x{self.height} at {self.framerate}fps"
