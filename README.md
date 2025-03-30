@@ -1,12 +1,11 @@
 # fmov
 
-![fmov logo](https://github.com/dylandibeneditto/fmov/blob/main/logo.png?raw=true)
+![fmov logo](https://github.com/dylandibeneditto/fmov/blob/main/logo.svg?raw=true)
 
 A performant way to create rendered video with Python by leveraging `ffmpeg` and `PIL`.
 
 # Rough Benchmarks
 
-time efficiency = video time / render time
 | FPS | Resolution | Video Time | Render Time | Video Time / Render Time |
 | --- | ---------- | ---------- | ----------- | --------------- |
 | 1 | 1920x1080 | 30s | 0.381s | 78.74x |
@@ -18,8 +17,6 @@ time efficiency = video time / render time
 | 120 | 1920x1080 | 30s | 17.960s | 1.67x |
 
 ---
-
-Rendered on a M3 MacBook Air using the [Hello World]() example
 
 # Installing
 
