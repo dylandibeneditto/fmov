@@ -49,6 +49,8 @@ choco install ffmpeg        # Windows
 
 ***The code for this and more examples can be found in the [examples](https://github.com/dylandibeneditto/fmov/tree/main/examples) folder***
 
+***Make sure you are currently on fmov version 0.1.8 or later***
+
 Starting the `Video`:
 
 ```python
