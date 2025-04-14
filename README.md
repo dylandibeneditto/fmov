@@ -1,8 +1,12 @@
 # fmov
 
-[![PyPI Downloads](https://static.pepy.tech/badge/fmov)](https://pepy.tech/projects/fmov)
-
 ![fmov logo](https://github.com/dylandibeneditto/fmov/blob/main/logo.png?raw=true)
+
+![Pepy Total Downloads](https://img.shields.io/pepy/dt/fmov)
+![PyPI - Python Version](https://img.shields.io/pypi/pyversions/fmov)
+![GitHub Issues or Pull Requests](https://img.shields.io/github/issues/dylandibeneditto/fmov)
+![PyPI - License](https://img.shields.io/pypi/l/fmov)
+![X (formerly Twitter) Follow](https://img.shields.io/twitter/follow/dylan_ditto)
 
 A performant way to create rendered video with Python by leveraging `ffmpeg` and `PIL`.
 
