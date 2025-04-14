@@ -19,26 +19,23 @@ def pilImageFromCairoSurface( surface ):
    return pilImage
 
 width, height = 1920, 1080
-video = Video((width, height), framerate=30, path="./video.mp4", pix_fmt="rgba")
 
-for i in range(video.seconds_to_frame(10)):
-    surface = cairo.ImageSurface(cairo.FORMAT_ARGB32, width, height)
-    ctx = cairo.Context(surface)
+with Video((width, height), framerate=30, path="./video.mp4", pix_fmt="rgba", prompt_deletion=False) as video:
+   for i in range(video.seconds_to_frame(10)):
+      surface = cairo.ImageSurface(cairo.FORMAT_ARGB32, width, height)
+      ctx = cairo.Context(surface)
 
-    # Make the background transparent
-    ctx.set_source_rgba(0, 0, 0, 0)
-    ctx.paint()
+      # Make the background transparent
+      ctx.set_source_rgba(0, 0, 0, 0)
+      ctx.paint()
 
-    ctx.set_source_rgba(1.0, 0.0, 0.0, 0.5) # semitransparent red color
-    
-    # This creates animation - the rectangle moves across the screen
-    x_position = 50 + (i * 5) % (width - 300)  # Move the rectangle
-    ctx.rectangle(x_position, 50, 300, 200)
-    ctx.fill()
-    
-    newimage = pilImageFromCairoSurface(surface)
+      ctx.set_source_rgba(1.0, 0.0, 0.0, 0.5) # semitransparent red color
+      
+      # This creates animation - the rectangle moves across the screen
+      x_position = 50 + (i * 5) % (width - 300)  # Move the rectangle
+      ctx.rectangle(x_position, 50, 300, 200)
+      ctx.fill()
+      
+      newimage = pilImageFromCairoSurface(surface)
 
-    video.pipe(newimage)
-
-# Render the video out
-video.render(prompt_deletion=False)  # Set to False to avoid prompt
+      video.pipe(newimage)

@@ -28,7 +28,9 @@ class Video:
         pix_fmt: str = "yuv420p",
         render_preset: str = "ultrafast",
         crf: int = 8,
-        audio_bitrate: str = "192k"
+        audio_bitrate: str = "192k",
+        prompt_deletion: bool = True,
+        log_duration: bool = True
     ):
         self.width = dimensions[0]
         self.height = dimensions[1]
@@ -40,6 +42,8 @@ class Video:
         self.render_preset = render_preset
         self.crf = crf
         self.audio_bitrate = audio_bitrate
+        self.prompt_deletion = prompt_deletion
+        self.log_duration = log_duration
         self.__audio_stamps: set[tuple[int, str, float]] = set([])
         """tuple index meanings:
             0 (int): time in ms of the audio
@@ -66,6 +70,15 @@ class Video:
             crf=self.crf
         ).overwrite_output().run_async(pipe_stdin=True)
         self.__process_start_time = time.time()
+
+    def __enter__(self):
+        if self.__process is None:
+            self.__start_render()
+        return self
+    
+    def __exit__(self, exc_type, exc_value, traceback):
+        if self.__process:
+            self.render()
 
     def sound_at_millisecond(self, time: int, path: str, volume: float = 0.4):
         """Inserts a sound at `n` milliseconds
@@ -179,13 +192,9 @@ class Video:
 
         subprocess.run(cmd, check=True)
 
-    def render(self, prompt_deletion: bool = True, log_duration: bool = True):
-        """Renders and outputs the final video to the determined file path
-        
-        Args:
-            log_duration (bool): whether to print out the time it took to render on completion, default is true
-            prompt_deletion (bool): prompts the user whether they want to delete the temporary file... make sure everything is right before this is disabled
-        """
+    def render(self):
+        """Renders and outputs the final video to the determined file path"""
+
         if self.__process:
             self.__process.stdin.close()
             self.__process.wait()
@@ -194,9 +203,9 @@ class Video:
                 self.__attach_audio()
             else:
                 shutil.copy(self.__temp_path, self.__path)
-        if log_duration:
+        if self.log_duration:
             print(f"Completed in {time.time()-self.__process_start_time:.2f}s")
-        if prompt_deletion:
+        if self.prompt_deletion:
             prompt = input(f"Would you like to delete '{self.__temp_path}'? Y/n ")
             if "Y" not in prompt:
                 return
