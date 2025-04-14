@@ -6,7 +6,7 @@
 ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/fmov)
 ![GitHub Issues or Pull Requests](https://img.shields.io/github/issues/dylandibeneditto/fmov)
 ![PyPI - License](https://img.shields.io/pypi/l/fmov)
-![X (formerly Twitter) Follow](https://img.shields.io/twitter/follow/dylan_ditto)
+[![X (formerly Twitter) Follow](https://img.shields.io/twitter/follow/dylan_ditto)](https://x.com/intent/follow?screen_name=dylan_ditto)
 
 A performant way to create rendered video with Python by leveraging `ffmpeg` and `PIL`.
 
