@@ -1,9 +1,9 @@
 from PIL import Image, ImageDraw
 import random
 from rich.progress import track
-from fmov import Video, frames
+from fmov import Video
 
-with fmov.Video((1920,1080), framerate=30, path="./video.mp4", prompt_deletion=False) as video:
+with Video((1920,1080), framerate=30, path="./video.mp4", prompt_deletion=False) as video:
     # position and velocity of the dvd logo
     x,y = (0,0)
     v = 180//video.framerate
