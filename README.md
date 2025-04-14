@@ -1,5 +1,7 @@
 # fmov
 
+[![PyPI Downloads](https://static.pepy.tech/badge/fmov)](https://pepy.tech/projects/fmov)
+
 ![fmov logo](https://github.com/dylandibeneditto/fmov/blob/main/logo.png?raw=true)
 
 A performant way to create rendered video with Python by leveraging `ffmpeg` and `PIL`.
