@@ -47,6 +47,8 @@ choco install ffmpeg        # Windows
 
 # Tutorial
 
+***The code for this and more examples can be found in the [examples](https://github.com/dylandibeneditto/fmov/tree/main/examples) folder***
+
 Creating the `Video` object:
 
 ```python
