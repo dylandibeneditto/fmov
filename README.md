@@ -18,6 +18,10 @@ A performant way to create rendered video with Python by leveraging `ffmpeg` and
 
 ---
 
+https://github.com/user-attachments/assets/1bbe2acc-e563-4fa4-bbf0-b0e6f04f0016
+
+> Here's an example use of fmov for automated chess analysis videos (trimmed to 1:30 to allow for embedding)
+
 # Installing
 
 Install fmov via pip:
