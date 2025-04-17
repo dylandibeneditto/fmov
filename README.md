@@ -10,6 +10,8 @@
 
 A performant way to create rendered video with Python by leveraging `ffmpeg` and `PIL`.
 
+[Documentation](https://dylandibeneditto.github.io/fmov/)
+
 ## Rough Benchmarks
 
 | FPS | Resolution | Video Time | Render Time | Video Time / Render Time |
