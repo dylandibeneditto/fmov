@@ -1,0 +1,33 @@
+site_name: fmov Documentation
+site_url: https://dylandibeneditto.github.io/fmov
+theme:
+  name: material
+  font:
+    text: Inter
+    code: JetBrains Mono
+  logo: assets/logo.png
+  features:
+    - content.code.copy
+    - content.code.annotate
+    - navigation.footer
+  palette:
+    scheme: slate
+
+markdown_extensions:
+  - attr_list
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - admonition
+  - pymdownx.details
+
+extra:
+  social:
+    - icon: simple/github
+      link: https://github.com/dylandibeneditto/fmov

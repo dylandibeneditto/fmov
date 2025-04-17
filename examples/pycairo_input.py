@@ -3,6 +3,8 @@ import numpy as np
 from PIL import Image
 from fmov import Video
 
+# This example demonstrates how to use PyCairo (vector graphics) to create a video with a moving rectangle.
+
 def pilImageFromCairoSurface( surface ):
    cairoFormat = surface.get_format()
    if cairoFormat == cairo.FORMAT_ARGB32:
