@@ -21,7 +21,7 @@ with Video((1920,1080), framerate=30, path="./video.mp4", prompt_deletion=False)
     # the hue shift value of the dvd logo
     hue = 0
 
-    # the frame index 4 minutes into the video
+    # the frame index 1 minutes into the video
     # could also be found with...
     # video.milliseconds_to_frame(60000)
     # vidoe.seconds_to_frame(60)
