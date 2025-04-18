@@ -22,3 +22,9 @@ pip install fmov
 ```
 
 Also make sure you have [FFmpeg](https://ffmpeg.org/download.html) installed on your system
+
+```bash
+sudo apt install ffmpeg     # Linux
+brew install ffmpeg         # MacOS
+choco install ffmpeg        # Windows
+```
