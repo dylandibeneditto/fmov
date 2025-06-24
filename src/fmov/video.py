@@ -108,7 +108,6 @@ class Video:
         self.__audio_stamps.append((int(time), str(path), max(float(volume),0.0)))
 
     def __attach_audio(self):
-        print(self.__audio_stamps)
         cmd = ["ffmpeg", "-y", "-i", self.__temp_path]
 
         filter_complex_parts = []
