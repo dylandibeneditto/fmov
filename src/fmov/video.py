@@ -47,7 +47,7 @@ class Video:
         self.crf = crf
         self.audio_bitrate = audio_bitrate
         self.log_duration = log_duration
-        self.__audio_stamps: set[tuple[int, str, float]] = set([])
+        self.__audio_stamps: list[tuple[int, str, float]] = list([])
         """tuple index meanings:
             0 (int): time in ms of the audio
             1 (str): path to the sound effect
@@ -105,9 +105,10 @@ class Video:
         if not os.path.exists(path):
             raise FileNotFoundError(f"audio file '{path}' does not exist")
 
-        self.__audio_stamps.add((int(time), str(path), max(float(volume),0.0)))
+        self.__audio_stamps.append((int(time), str(path), max(float(volume),0.0)))
 
     def __attach_audio(self):
+        print(self.__audio_stamps)
         cmd = ["ffmpeg", "-y", "-i", self.__temp_path]
 
         filter_complex_parts = []
@@ -260,7 +261,7 @@ class Video:
         from .previewer import preview_video
         preview_video(self.length, self.function, self)
 
-    def save(self, use_preview_cache=True, workers=1):
+    def save(self, use_preview_cache=True, workers=0):
         """Render and save the video using the frame function. Optionally use preview cache and multiprocessing."""
         if not self.function or not self.length:
             raise ValueError("No frame generation function or length specified.")
@@ -290,15 +291,9 @@ class Video:
                 arr = np.array(img)
             return arr[..., ::-1]
 
-        if workers > 1:
-            import concurrent.futures
-            with concurrent.futures.ThreadPoolExecutor(max_workers=workers) as executor:
-                for arr in (executor.map(get_frame, range(self.length)) if not self.log_duration else track(executor.map(get_frame, range(self.length)), description="Generating Video...", total=self.length)):
-                    out.write(arr)
-        else:
-            for i in (range(self.length) if not self.log_duration else track(range(self.length), description="Generating Video...", total=self.length)):
-                arr = get_frame(i)
-                out.write(arr)
+        for i in (range(self.length) if not self.log_duration else track(range(self.length), description="Generating Video...", total=self.length)):
+            arr = get_frame(i)
+            out.write(arr)
         out.release()
 
         if len(self.__audio_stamps) > 0:
