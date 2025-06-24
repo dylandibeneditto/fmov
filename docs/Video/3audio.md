@@ -1,28 +1,29 @@
 # Adding Audio
 
-You can add audio at any time in your video using one of the time-based sound_at_* methods. All sound functions accept a file path and an optional volume parameter.
+You can add audio events from within your frame function using the `video.audio(path, at, volume)` method. This allows you to register sound effects at any frame or timestamp, making it easy to synchronize audio with animation events.
 
 ```py title="example"
-video = Video()
+from fmov import Video
+from PIL import Image
 
-video.sound_at_second(1, "./pop.wav")       # add sound at 1 second
-video.sound_at_frame(120, "./click.mp3")    # add sound at 120th frame
-video.sound_at_minute(0.5, "./chime.m4a")   # add sound at 30 seconds
+def generate_frame(frame: int, video: Video) -> Image:
+    if frame % 30 == 0:
+        video.audio("./pop.wav", at=frame, volume=1.0)  # Add sound at every second
+    img = Image.new("RGB", (video.width, video.height), "black")
+    return img
+
+video = Video(path="output.mp4", dimensions=(640, 480), fps=30, function=generate_frame, length="5s")
+video.preview()
+video.save()
 ```
 
-### `sound_at_millisecond(time: int, path: str, volume: float = 0.4)`
+### `video.audio(path: str, at, volume: float = 1.0)`
 
-Adds audio at a specific time in milliseconds.
-Supports .wav, .mp3, .m4a, and many more formats.
+Adds audio at a specific frame or time. The `at` argument can be a frame index, or a string like `'2s'`, `'500ms'`, `'1m30s'`, etc.
 
-### `sound_at_frame(frame: int, path: str, volume: float = 0.4)`
+- `path`: Path to the audio file (wav, mp3, m4a, etc.)
+- `at`: When to play the sound (frame number or time string)
+- `volume`: Volume of the sound (0.0 to 1.0, default 1.0)
 
-Adds audio at a specific frame index.
-
-### `sound_at_second(time: float, path: str, volume: float = 0.4)`
-
-Adds audio at a specific time in seconds.
-
-### `sound_at_minute(time: float, path: str, volume: float = 0.4)`
-
-Adds audio at a specific time in minutes.
+!!! note
+    You can call `video.audio(...)` as many times as you want, even multiple times per frame.
