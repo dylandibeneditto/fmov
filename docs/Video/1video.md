@@ -57,7 +57,7 @@ Specifies the width and height of the video
 video = Video(dimensions=(1920, 1080))
 ```
 
-### `framerate: int = 30`
+### `fps: int = 30`
 
 Specifies the frames per second of the video
 

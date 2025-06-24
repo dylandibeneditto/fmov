@@ -3,7 +3,7 @@
 Conversions can be helpful when you need to find how many frames are in a certain time frame and vice-versa.
 
 ```py title="example"
-video = Video(framerate=30)
+video = Video(fps=30)
 
 video.seconds_to_frame(2) # 60
 video.frame_to_seconds(60) # 2

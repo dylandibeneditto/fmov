@@ -6,7 +6,7 @@
 from fmov import Video
 from PIL import Image, ImageDraw
 
-with Video((1920//2, 1080//2), framerate=120, path="./video.mp4", prompt_deletion=False) as video: #(1)
+with Video((1920//2, 1080//2), fps=120, path="./video.mp4", prompt_deletion=False) as video: #(1)
     for i in range(video.seconds_to_frame(30)): #(2)
         img = Image.new("RGB", (video.width, video.height), "#000000") #(3)
         draw = ImageDraw.Draw(img) #(4)
@@ -23,7 +23,7 @@ with Video((1920//2, 1080//2), framerate=120, path="./video.mp4", prompt_deletio
     video.sound_at_second(time=25, path="./audio.wav")
 ```
 
-1. Creating the video via Context Manager. This video is a 1920 x 1080 video with a framerate of 120fps. The video will be saved at './video.mp4' and there will be no prompt for deleting the temporary file
+1. Creating the video via Context Manager. This video is a 1920 x 1080 video with a fps of 120fps. The video will be saved at './video.mp4' and there will be no prompt for deleting the temporary file
 
 2. This code loops through every frame that will make up a 30 second video
 

@@ -1,19 +1,14 @@
 from fmov import Video
 from PIL import Image, ImageDraw
+import numpy as np
 
-with Video((1920//2, 1080//2), framerate=120, path="./video.mp4", prompt_deletion=False) as video:
-    for i in range(video.seconds_to_frame(30)):
-        img = Image.new("RGB", (video.width, video.height), "#000000")
-        draw = ImageDraw.Draw(img)
+def generate_frame(frame: int, video: Video) -> Image:
+    img = Image.new("RGB", (video.width, video.height), "#000000")
+    draw = ImageDraw.Draw(img)
+    draw.text((100, video.height//2), f"Hello world! This is frame {str(frame)}", fill="#ffffff")
+    return img
 
-        #          x    y                 content of the text                     color
-        draw.text((100, video.height//2), f"Hello world! This is frame {str(i)}", fill="#ffffff")
-
-        video.pipe(img)
-
-    video.sound_at_frame(frame=10, path="./audio.wav", volume=0.5)
-
-    video.sound_at_millisecond(time=4000, path="./audio.wav", volume=1.0)
-
-    video.sound_at_second(time=25, path="./audio.wav")
+video = Video(path="output.mp4", dimensions=(1920//2, 1080//2), fps=120, function=generate_frame, length="30s")
+video.preview()
+video.save()
 
