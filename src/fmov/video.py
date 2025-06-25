@@ -5,6 +5,9 @@ import time
 import subprocess
 import os
 import shutil
+import cv2
+from PIL import Image
+from rich.progress import track
 
 class Video:
     """fmov.Video
@@ -42,15 +45,17 @@ class Video:
         self.crf = crf
         self.audio_bitrate = audio_bitrate
         self.log_duration = log_duration
-        self.__audio_stamps: set[tuple[int, str, float]] = set([])
+        self.__audio_stamps: list[tuple[int, str, float]] = list([])
         """tuple index meanings:
             0 (int): time in ms of the audio
             1 (str): path to the sound effect
             2 (float): volume of the sound effect 0 - 1
         """
         self.__frame_count = 0
-        self.__process = None
         self.__process_start_time = time.time() # will be set later anyways, set now to suppress errors
+        self.function = function
+        self.length = self._parse_length(length)
+        self._audio_stamps = []
 
     def __start_render(self):
         self.__process = ffmpeg.input(
@@ -69,14 +74,9 @@ class Video:
         ).overwrite_output().run_async(pipe_stdin=True)
         self.__process_start_time = time.time()
 
-    def __enter__(self):
-        if self.__process is None:
-            self.__start_render()
-        return self
-    
-    def __exit__(self, exc_type, exc_value, traceback):
-        if self.__process:
-            self.render()
+    def audio(self, path: str, at, volume: float = 1.0):
+        at = self._parse_length(str(at))
+        self.__sound_at_millisecond(float(at) / self.fps * 1000.0, path, volume)
 
     def _parse_time(self, time):
         """
@@ -250,6 +250,12 @@ class Video:
     def set_path(self, path: str):
         self.__path = path
         self.__temp_path = self.__get_temp_path(path)
+
+    def get_path(self):
+        return self.__path
+
+    def get_audio_stamps(self):
+        return self.__audio_stamps
 
     def __repr__(self):
         return f"fmov.Video({self.width}, {self.height}, {self.fps}, {self.__path})"

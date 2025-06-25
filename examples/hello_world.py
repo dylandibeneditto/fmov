@@ -1,5 +1,6 @@
 from fmov import Video
 from PIL import Image, ImageDraw
+import numpy as np
 
 with Video("video.mp4", (1920//2, 1080//2), fps=120) as video:
     for i in range(video.seconds_to_frame(30)):

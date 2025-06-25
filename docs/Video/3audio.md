@@ -1,9 +1,10 @@
 # Adding Audio
 
-You can add audio at any time in your video using one of the time-based sound_at_* methods. All sound functions accept a file path and an optional volume parameter.
+You can add audio events from within your frame function using the `video.audio(path, at, volume)` method. This allows you to register sound effects at any frame or timestamp, making it easy to synchronize audio with animation events.
 
 ```py title="example"
-video = Video()
+from fmov import Video
+from PIL import Image
 
 video.sound("./pop.wav", "1s")     # add sound at 1 second
 video.sound("./click.mp3", 120)    # add sound at 120th frame

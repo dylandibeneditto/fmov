@@ -1,6 +1,6 @@
-# Conversions
+# Time & Frame Conversions
 
-Conversions can be helpful when you need to find how many frames are in a certain time frame and vice-versa.
+fmov provides a set of helpful utilities for converting between frames and time units. This makes it easy to synchronize animation, audio, and effects.
 
 ```py title="example"
 video = Video(fps=30)
@@ -23,13 +23,10 @@ video.time_to_frame(10) # 10
 ```
 
 ### `frame_to_milliseconds(frame: int) -> int`
-
 Returns the time in milliseconds that the given frame will begin.
 
 ### `frame_to_seconds(frame: int) -> float`
-
 Returns the time in seconds that the given frame will begin.
 
 ### `frame_to_minutes(frame: int) -> float`
-
 Returns the time in minutes that the given frame will begin.

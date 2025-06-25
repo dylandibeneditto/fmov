@@ -34,5 +34,4 @@ with Video("video.mp4", (1920//2, 1080//2), fps=120) as video: #(1)
 5. This adds the frame to the video
 
 !!! note Note
-
     For more about how to create frames with PIL, visit the [PIL documentation](https://pillow.readthedocs.io/en/stable/)
