@@ -14,7 +14,7 @@ from fmov import Video
     from fmov import Video
     from PIL import Image
 
-    with Video((1920, 1080), path="./output.mp4") as video:
+    with Video("./output.mp4", (1920, 1080)) as video:
         
         for i in video.seconds_to_frame(30):
 
@@ -29,9 +29,9 @@ from fmov import Video
     from fmov import Video
     from PIL import Image
 
-    video = Video((1920, 1080), path="./output.mp4"):
+    video = Video("./output.mp4", (1920, 1080))
         
-    for i in video.seconds_to_frame(30):
+    for i in video.time_to_frame("30s"):
 
         image = Image.new("RGB", (video.width, video.height), "#000000")
 
@@ -48,6 +48,10 @@ from fmov import Video
 
 When calling the `Video` function, many parameters can be tweaked. Here are all of them in order:
 
+### `path: str = "./video.mp4"`
+
+Specifies where the output file will be saved. Can be absolute or relative.
+
 ### `dimensions: tuple[int, int] = (1920, 1080)`
 
 Specifies the width and height of the video
@@ -57,13 +61,9 @@ Specifies the width and height of the video
 video = Video(dimensions=(1920, 1080))
 ```
 
-### `framerate: int = 30`
+### `fps: int = 30`
 
 Specifies the frames per second of the video
-
-### `path: str = "./video.mp4"`
-
-Specifies where the output file will be saved. Can be absolute or relative.
 
 ### `vcodec: str = "libx264"`
 

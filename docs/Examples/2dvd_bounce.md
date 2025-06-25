@@ -8,10 +8,10 @@ import random
 from rich.progress import track
 from fmov import Video
 
-with Video((1920,1080), framerate=30, path="./video.mp4", prompt_deletion=False) as video:
+with Video(path="./video.mp4", (1920,1080), fps=30) as video:
     # position and velocity of the dvd logo
     x,y = (0,0)
-    v = 180//video.framerate
+    v = 180//video.fps
     vx, vy = (v,v)
 
     # create dvd image as a PIL image
@@ -26,11 +26,7 @@ with Video((1920,1080), framerate=30, path="./video.mp4", prompt_deletion=False)
     # the hue shift value of the dvd logo
     hue = 0
 
-    # the frame index 1 minutes into the video
-    # could also be found with...
-    # video.milliseconds_to_frame(60000)
-    # vidoe.seconds_to_frame(60)
-    total_frames = video.minutes_to_frame(1)
+    total_frames = video.time_to_frame("1m")
     
     # using rich.track to keep track of the progress, does a good job of predicting ETA usually
     # keep in mind that this only counts the loading of the video, the audio comes afterward but
@@ -57,7 +53,7 @@ with Video((1920,1080), framerate=30, path="./video.mp4", prompt_deletion=False)
 
         # play a sound effect and shift the hue of the logo on a bump
         if bumped:
-            video.sound_at_frame(frame=i, path="./audio.wav")
+            video.sound(path="./audio.wav", at=i)
             hue = (hue+random.randint(20,60))%255
 
         # position updates

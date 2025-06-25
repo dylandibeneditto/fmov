@@ -3,23 +3,24 @@
 Conversions can be helpful when you need to find how many frames are in a certain time frame and vice-versa.
 
 ```py title="example"
-video = Video(framerate=30)
+video = Video(fps=30)
 
-video.seconds_to_frame(2) # 60
+video.time_to_frame("2s") # 60
 video.frame_to_seconds(60) # 2
 ```
 
-### `seconds_to_frame(time: float) -> int`
+### `time_to_frame(time: Union(str | int)) -> int`
 
-Returns the frame index that corresponds to a specific time in seconds.
+Returns the frames for a given time code
 
-### `minutes_to_frame(time: float) -> int`
+```py title="time_codes"
+video = Video(fps=30)
 
-Returns the frame index that corresponds to a specific time in minutes.
-
-### `milliseconds_to_frame(time: int) -> int`
-
-Returns the frame index that corresponds to a specific time in milliseconds.
+video.time_to_frame("1m") # 1800
+video.time_to_frame("1m 30s") # 2700
+video.time_to_frame("3h 10m 25s 500ms") # 342765
+video.time_to_frame(10) # 10
+```
 
 ### `frame_to_milliseconds(frame: int) -> int`
 
