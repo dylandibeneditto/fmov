@@ -257,6 +257,8 @@ class Video:
 
     def preview(self):
         """Preview video by generating frames on the fly and allowing scrubbing. Uses PyQt5 for advanced interactivity."""
+        if hasattr(self.function, "reset"):
+            self.function.reset()
         from .previewer import preview_video
         preview_video(self.length, self.function, self)
 
@@ -264,6 +266,9 @@ class Video:
         """Render and save the video using the frame function. Optionally use preview cache and multiprocessing."""
         if not self.function or not self.length:
             raise ValueError("No frame generation function or length specified.")
+
+        if hasattr(self.function, "reset"):
+            self.function.reset()
 
         self.__process_start_time = time.time()
         fourcc = cv2.VideoWriter_fourcc(*'mp4v')
@@ -279,6 +284,8 @@ class Video:
                 frame_cache = None
 
         def get_frame(i):
+            if hasattr(self.function, "seek"):
+                self.function.seek(i)
             if frame_cache and i in frame_cache:
                 arr = frame_cache[i]
             else:
