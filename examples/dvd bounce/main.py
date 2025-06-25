@@ -1,35 +1,49 @@
 from PIL import Image
 import random
-from fmov import Video
+import sys
+import os
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../')))
+from src.fmov import Video
 
-with Video((1920,1080), fps=30, path="./video.mp4", prompt_deletion=False) as video:
+with Video(path="./video.mp4", dimensions=(1920,1080), fps=30) as video:
     # position and velocity of the dvd logo
     x,y = (0,0)
     v = 180//video.fps
     vx, vy = (v,v)
 
-def generate_frame(frame: int, video: Video) -> Image:
-    global x, y, vx, vy, hue, dvd_img, img_width, img_height
-    image = Image.new("RGB", (video.width, video.height), "#000000")
-    fill_color = Image.new("HSV", (1, 1), (hue, 200, 220)).convert("RGB").getpixel((0, 0))
-    color_layer = Image.new("RGB", dvd_img.size, fill_color)
-    image.paste(color_layer, (x, y), dvd_img.convert("L") if dvd_img.mode != "RGBA" else dvd_img.split()[3])
-    bumped = False
-    # Bounce on X edges
-    if x + vx > video.width - img_width or x + vx < 0:
-        vx *= -1
-        bumped = True
-    # Bounce on Y edges
-    if y + vy > video.height - img_height or y + vy < 0:
-        vy *= -1
-        bumped = True
-    if bumped:
-        video.audio("./audio.wav", at=frame)
-        hue = (hue + random.randint(20, 60)) % 255
-    x += vx
-    y += vy
-    return image
+    total_frames = video.time_to_frame("1m")
+    
+    # using rich.track to keep track of the progress, does a good job of predicting ETA usually
+    # keep in mind that this only counts the loading of the video, the audio comes afterward but
+    # usually is negligable unless you have a large file with many effects
+    for i in track(range(total_frames), "Rendering...", total=total_frames):
+        # initializing the common PIL variables
+        image = Image.new("RGB", (video.width, video.height), "#000000")
+        #draw = ImageDraw.Draw(image) # usually you need this to draw shapes and text, however this example doesnt require it
 
-video = Video(path="output.mp4", dimensions=(1920, 1080), fps=30, function=generate_frame, length="10s")
-video.preview()
-video.save()
+        # adding the dvd image
+        # finding the fill color based on the hue, turn it into an image, and use the dvd image as a mask
+        fill_color = Image.new("HSV", (1, 1), (hue, 200, 220)).convert("RGB").getpixel((0, 0))
+        color_layer = Image.new("RGB", dvd_img.size, fill_color)
+        image.paste(color_layer, (x, y), dvd_img.convert("L") if dvd_img.mode != "RGBA" else dvd_img.split()[3])
+
+        # collision detection
+        bumped = False
+        if x+vx >= video.width-img_width or x+vx <= 0:
+            vx *= -1
+            bumped = True
+        if y+vy >= video.height-img_height or y+vy <= 0:
+            vy *= -1
+            bumped = True
+
+        # play a sound effect and shift the hue of the logo on a bump
+        if bumped:
+            video.sound(path="./audio.wav", at=i)
+            hue = (hue+random.randint(20,60))%255
+
+        # position updates
+        x += vx
+        y += vy
+
+        # finally, append the frame to the end of the video
+        video.pipe(image)

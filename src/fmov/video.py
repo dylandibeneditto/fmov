@@ -6,7 +6,6 @@ import subprocess
 import os
 import shutil
 import cv2
-from PIL import Image
 
 class Video:
     """fmov.Video
@@ -50,11 +49,9 @@ class Video:
             1 (str): path to the sound effect
             2 (float): volume of the sound effect 0 - 1
         """
+        self.__process = None
         self.__frame_count = 0
         self.__process_start_time = time.time() # will be set later anyways, set now to suppress errors
-        self.function = function
-        self.length = self._parse_length(length)
-        self._audio_stamps = []
 
     def __enter__(self):
         if self.__process is None:
@@ -71,13 +68,13 @@ class Video:
             format="rawvideo",
             pix_fmt="rgb24",
             s=f"{self.width}x{self.height}",
-            fps=self.fps
+            framerate=self.fps
         ).output(
             self.__temp_path,
             vcodec=self.vcodec,
             pix_fmt=self.pix_fmt,
             preset=self.render_preset,
-            loglevel="quiet",
+            loglevel="error",
             crf=self.crf
         ).overwrite_output().run_async(pipe_stdin=True)
         self.__process_start_time = time.time()
@@ -86,21 +83,21 @@ class Video:
         at = self._parse_length(str(at))
         self.__sound_at_millisecond(float(at) / self.fps * 1000.0, path, volume)
 
-    def _parse_time(self, time):
+    def _parse_time(self, t):
         """
         Parses a time string or int into a number of frames (for self.frames).
         Supports frames (no suffix), ms, s, m, h, and stacked units (e.g. '1h23m', '2m 10s', '500ms', '100').
         """
-        if time is None:
+        if t is None:
             return 0
-        if isinstance(time, int):
+        if isinstance(t, int):
             # Assume frames if int
-            return time
-        if isinstance(time, str):
+            return t
+        if isinstance(t, str):
             import re
             total_frames = 0.0
-            time = time.replace(' ', '')
-            for value, unit in re.findall(r'([\d.]+)(ms|s|m|h|)', time):
+            t = t.replace(' ', '')
+            for value, unit in re.findall(r'([\d.]+)(ms|s|m|h|)', t):
                 if unit == '':  # frames
                     total_frames += float(value)
                 elif unit == 'ms':
@@ -114,10 +111,10 @@ class Video:
             return int(total_frames)
         return 0
 
-    def time_to_frame(self, time: Union(str | int)):
+    def time_to_frame(self, time: str | int):
         return self._parse_time(time)
 
-    def sound(self, path: str, at: Union(str | int), volume: float = 0.4):
+    def sound(self, path: str, at: str | int, volume: float = 0.4):
         """Inserts a sound at a time code
         
         Args:
@@ -128,13 +125,12 @@ class Video:
         Raises:
             FileNotFoundError: path to audio file does not exist
         """
-        self._sound_at_millisecond(self._parse_time(at))
+        self._sound_at_millisecond(self.frame_to_milliseconds(self._parse_time(at)), path, volume)
 
     def _sound_at_millisecond(self, time: int, path: str, volume: float = 0.4):
         if not os.path.exists(path):
             raise FileNotFoundError(f"audio file '{path}' does not exist")
-
-        self.__audio_stamps.add((int(time), str(path), max(float(volume),0.0)))
+        self.__audio_stamps.append((int(time), str(path), max(float(volume),0.0)))
 
     def pipe(self, image: Image):
         """Appends a PIL `Image` as a frame to the video
@@ -147,6 +143,10 @@ class Video:
         """
         if not type(image) is Image:
             raise TypeError(f"Argument of type {type(image)} cannot be assigned to type PIL.Image")
+        if image.size != (self.width, self.height):
+            raise ValueError(f"Image size {image.size} does not match video size {(self.width, self.height)}")
+        if image.mode != "RGB":
+            raise ValueError(f"Image mode {image.mode} is not 'RGB'")
 
         if self.__process is None:
             self.__start_render()
