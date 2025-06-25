@@ -493,9 +493,9 @@
 
 <h1 id="dvd-bounce-example">DVD Bounce Example</h1>
 <p><img alt="output" src="../../assets/dvd.mp4" /></p>
-<div class="language-py highlight"><span class="filename">main.py</span><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">PIL</span><span class="w"> </span><span class="kn">import</span> <span class="n">Image</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="kn">import</span><span class="w"> </span><span class="nn">random</span>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="kn">from</span><span class="w"> </span><span class="nn">fmov</span><span class="w"> </span><span class="kn">import</span> <span class="n">Video</span>
+<div class="language-py highlight"><span class="filename">main.py</span><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="kn">import</span> <span class="nn">random</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="kn">from</span> <span class="nn">fmov</span> <span class="kn">import</span> <span class="n">Video</span>
 </span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
 </span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="k">with</span> <span class="n">Video</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s2">&quot;./video.mp4&quot;</span><span class="p">,</span> <span class="p">(</span><span class="mi">1920</span><span class="p">,</span><span class="mi">1080</span><span class="p">),</span> <span class="n">fps</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span> <span class="k">as</span> <span class="n">video</span><span class="p">:</span>
 </span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>    <span class="c1"># position and velocity of the dvd logo</span>
@@ -503,92 +503,43 @@
 </span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>    <span class="n">v</span> <span class="o">=</span> <span class="mi">180</span><span class="o">//</span><span class="n">video</span><span class="o">.</span><span class="n">fps</span>
 </span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>    <span class="n">vx</span><span class="p">,</span> <span class="n">vy</span> <span class="o">=</span> <span class="p">(</span><span class="n">v</span><span class="p">,</span><span class="n">v</span><span class="p">)</span>
 </span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>
-</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="k">def</span><span class="w"> </span><span class="nf">generate_frame</span><span class="p">(</span><span class="n">frame</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">video</span><span class="p">:</span> <span class="n">Video</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Image</span><span class="p">:</span>
-</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>    <span class="k">global</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">vx</span><span class="p">,</span> <span class="n">vy</span><span class="p">,</span> <span class="n">hue</span><span class="p">,</span> <span class="n">dvd_img</span><span class="p">,</span> <span class="n">img_width</span><span class="p">,</span> <span class="n">img_height</span>
-</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>    <span class="n">image</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;RGB&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">video</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="n">video</span><span class="o">.</span><span class="n">height</span><span class="p">),</span> <span class="s2">&quot;#000000&quot;</span><span class="p">)</span>  <span class="c1"># (11)</span>
-</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>    <span class="n">fill_color</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;HSV&quot;</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="n">hue</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">220</span><span class="p">))</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s2">&quot;RGB&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">getpixel</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>  <span class="c1"># (12)</span>
-</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>    <span class="n">color_layer</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;RGB&quot;</span><span class="p">,</span> <span class="n">dvd_img</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">fill_color</span><span class="p">)</span>  <span class="c1"># (13)</span>
-</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>    <span class="n">image</span><span class="o">.</span><span class="n">paste</span><span class="p">(</span><span class="n">color_layer</span><span class="p">,</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span> <span class="n">dvd_img</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s2">&quot;L&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="n">dvd_img</span><span class="o">.</span><span class="n">mode</span> <span class="o">!=</span> <span class="s2">&quot;RGBA&quot;</span> <span class="k">else</span> <span class="n">dvd_img</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">3</span><span class="p">])</span>  <span class="c1"># (14)</span>
-</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>    <span class="n">bumped</span> <span class="o">=</span> <span class="kc">False</span>
-</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>    <span class="k">if</span> <span class="n">x</span> <span class="o">+</span> <span class="n">vx</span> <span class="o">&gt;</span> <span class="n">video</span><span class="o">.</span><span class="n">width</span> <span class="o">-</span> <span class="n">img_width</span> <span class="ow">or</span> <span class="n">x</span> <span class="o">+</span> <span class="n">vx</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
-</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>        <span class="n">vx</span> <span class="o">*=</span> <span class="o">-</span><span class="mi">1</span>
-</span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a>        <span class="n">bumped</span> <span class="o">=</span> <span class="kc">True</span>
-</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a>    <span class="k">if</span> <span class="n">y</span> <span class="o">+</span> <span class="n">vy</span> <span class="o">&gt;</span> <span class="n">video</span><span class="o">.</span><span class="n">height</span> <span class="o">-</span> <span class="n">img_height</span> <span class="ow">or</span> <span class="n">y</span> <span class="o">+</span> <span class="n">vy</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
-</span><span id="__span-0-22"><a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a>        <span class="n">vy</span> <span class="o">*=</span> <span class="o">-</span><span class="mi">1</span>
-</span><span id="__span-0-23"><a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a>        <span class="n">bumped</span> <span class="o">=</span> <span class="kc">True</span>
-</span><span id="__span-0-24"><a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a>    <span class="k">if</span> <span class="n">bumped</span><span class="p">:</span>
-</span><span id="__span-0-25"><a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a>        <span class="n">video</span><span class="o">.</span><span class="n">audio</span><span class="p">(</span><span class="s2">&quot;./audio.wav&quot;</span><span class="p">,</span> <span class="n">at</span><span class="o">=</span><span class="n">frame</span><span class="p">)</span>  <span class="c1"># (15)</span>
-</span><span id="__span-0-26"><a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a>        <span class="n">hue</span> <span class="o">=</span> <span class="p">(</span><span class="n">hue</span> <span class="o">+</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">60</span><span class="p">))</span> <span class="o">%</span> <span class="mi">255</span>  <span class="c1"># (16)</span>
-</span><span id="__span-0-27"><a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a>    <span class="n">x</span> <span class="o">+=</span> <span class="n">vx</span>  <span class="c1"># (17)</span>
-</span><span id="__span-0-28"><a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a>    <span class="n">y</span> <span class="o">+=</span> <span class="n">vy</span>  <span class="c1"># (18)</span>
-</span><span id="__span-0-29"><a id="__codelineno-0-29" name="__codelineno-0-29" href="#__codelineno-0-29"></a>    <span class="k">return</span> <span class="n">image</span>  <span class="c1"># (19)</span>
-</span><span id="__span-0-30"><a id="__codelineno-0-30" name="__codelineno-0-30" href="#__codelineno-0-30"></a>
-</span><span id="__span-0-31"><a id="__codelineno-0-31" name="__codelineno-0-31" href="#__codelineno-0-31"></a><span class="n">video</span> <span class="o">=</span> <span class="n">Video</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s2">&quot;output.mp4&quot;</span><span class="p">,</span> <span class="n">dimensions</span><span class="o">=</span><span class="p">(</span><span class="mi">1920</span><span class="p">,</span> <span class="mi">1080</span><span class="p">),</span> <span class="n">fps</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">function</span><span class="o">=</span><span class="n">generate_frame</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="s2">&quot;1m&quot;</span><span class="p">)</span>  <span class="c1"># (20)</span>
-</span><span id="__span-0-32"><a id="__codelineno-0-32" name="__codelineno-0-32" href="#__codelineno-0-32"></a><span class="n">video</span><span class="o">.</span><span class="n">preview</span><span class="p">()</span>  <span class="c1"># (21)</span>
-</span><span id="__span-0-33"><a id="__codelineno-0-33" name="__codelineno-0-33" href="#__codelineno-0-33"></a><span class="n">video</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>  <span class="c1"># (22)</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>    <span class="n">total_frames</span> <span class="o">=</span> <span class="n">video</span><span class="o">.</span><span class="n">time_to_frame</span><span class="p">(</span><span class="s2">&quot;1m&quot;</span><span class="p">)</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>    <span class="c1"># using rich.track to keep track of the progress, does a good job of predicting ETA usually</span>
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>    <span class="c1"># keep in mind that this only counts the loading of the video, the audio comes afterward but</span>
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>    <span class="c1"># usually is negligable unless you have a large file with many effects</span>
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">track</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">total_frames</span><span class="p">),</span> <span class="s2">&quot;Rendering...&quot;</span><span class="p">,</span> <span class="n">total</span><span class="o">=</span><span class="n">total_frames</span><span class="p">):</span>
+</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>        <span class="c1"># initializing the common PIL variables</span>
+</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>        <span class="n">image</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;RGB&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">video</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="n">video</span><span class="o">.</span><span class="n">height</span><span class="p">),</span> <span class="s2">&quot;#000000&quot;</span><span class="p">)</span>
+</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>        <span class="c1">#draw = ImageDraw.Draw(image) # usually you need this to draw shapes and text, however this example doesnt require it</span>
+</span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a>
+</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a>        <span class="c1"># adding the dvd image</span>
+</span><span id="__span-0-22"><a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a>        <span class="c1"># finding the fill color based on the hue, turn it into an image, and use the dvd image as a mask</span>
+</span><span id="__span-0-23"><a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a>        <span class="n">fill_color</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;HSV&quot;</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="n">hue</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">220</span><span class="p">))</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s2">&quot;RGB&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">getpixel</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+</span><span id="__span-0-24"><a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a>        <span class="n">color_layer</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;RGB&quot;</span><span class="p">,</span> <span class="n">dvd_img</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">fill_color</span><span class="p">)</span>
+</span><span id="__span-0-25"><a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a>        <span class="n">image</span><span class="o">.</span><span class="n">paste</span><span class="p">(</span><span class="n">color_layer</span><span class="p">,</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span> <span class="n">dvd_img</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s2">&quot;L&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="n">dvd_img</span><span class="o">.</span><span class="n">mode</span> <span class="o">!=</span> <span class="s2">&quot;RGBA&quot;</span> <span class="k">else</span> <span class="n">dvd_img</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">3</span><span class="p">])</span>
+</span><span id="__span-0-26"><a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a>
+</span><span id="__span-0-27"><a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a>        <span class="c1"># collision detection</span>
+</span><span id="__span-0-28"><a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a>        <span class="n">bumped</span> <span class="o">=</span> <span class="kc">False</span>
+</span><span id="__span-0-29"><a id="__codelineno-0-29" name="__codelineno-0-29" href="#__codelineno-0-29"></a>        <span class="k">if</span> <span class="n">x</span><span class="o">+</span><span class="n">vx</span> <span class="o">&gt;=</span> <span class="n">video</span><span class="o">.</span><span class="n">width</span><span class="o">-</span><span class="n">img_width</span> <span class="ow">or</span> <span class="n">x</span><span class="o">+</span><span class="n">vx</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+</span><span id="__span-0-30"><a id="__codelineno-0-30" name="__codelineno-0-30" href="#__codelineno-0-30"></a>            <span class="n">vx</span> <span class="o">*=</span> <span class="o">-</span><span class="mi">1</span>
+</span><span id="__span-0-31"><a id="__codelineno-0-31" name="__codelineno-0-31" href="#__codelineno-0-31"></a>            <span class="n">bumped</span> <span class="o">=</span> <span class="kc">True</span>
+</span><span id="__span-0-32"><a id="__codelineno-0-32" name="__codelineno-0-32" href="#__codelineno-0-32"></a>        <span class="k">if</span> <span class="n">y</span><span class="o">+</span><span class="n">vy</span> <span class="o">&gt;=</span> <span class="n">video</span><span class="o">.</span><span class="n">height</span><span class="o">-</span><span class="n">img_height</span> <span class="ow">or</span> <span class="n">y</span><span class="o">+</span><span class="n">vy</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+</span><span id="__span-0-33"><a id="__codelineno-0-33" name="__codelineno-0-33" href="#__codelineno-0-33"></a>            <span class="n">vy</span> <span class="o">*=</span> <span class="o">-</span><span class="mi">1</span>
+</span><span id="__span-0-34"><a id="__codelineno-0-34" name="__codelineno-0-34" href="#__codelineno-0-34"></a>            <span class="n">bumped</span> <span class="o">=</span> <span class="kc">True</span>
+</span><span id="__span-0-35"><a id="__codelineno-0-35" name="__codelineno-0-35" href="#__codelineno-0-35"></a>
+</span><span id="__span-0-36"><a id="__codelineno-0-36" name="__codelineno-0-36" href="#__codelineno-0-36"></a>        <span class="c1"># play a sound effect and shift the hue of the logo on a bump</span>
+</span><span id="__span-0-37"><a id="__codelineno-0-37" name="__codelineno-0-37" href="#__codelineno-0-37"></a>        <span class="k">if</span> <span class="n">bumped</span><span class="p">:</span>
+</span><span id="__span-0-38"><a id="__codelineno-0-38" name="__codelineno-0-38" href="#__codelineno-0-38"></a>            <span class="n">video</span><span class="o">.</span><span class="n">sound</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s2">&quot;./audio.wav&quot;</span><span class="p">,</span> <span class="n">at</span><span class="o">=</span><span class="n">i</span><span class="p">)</span>
+</span><span id="__span-0-39"><a id="__codelineno-0-39" name="__codelineno-0-39" href="#__codelineno-0-39"></a>            <span class="n">hue</span> <span class="o">=</span> <span class="p">(</span><span class="n">hue</span><span class="o">+</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span><span class="mi">60</span><span class="p">))</span><span class="o">%</span><span class="mi">255</span>
+</span><span id="__span-0-40"><a id="__codelineno-0-40" name="__codelineno-0-40" href="#__codelineno-0-40"></a>
+</span><span id="__span-0-41"><a id="__codelineno-0-41" name="__codelineno-0-41" href="#__codelineno-0-41"></a>        <span class="c1"># position updates</span>
+</span><span id="__span-0-42"><a id="__codelineno-0-42" name="__codelineno-0-42" href="#__codelineno-0-42"></a>        <span class="n">x</span> <span class="o">+=</span> <span class="n">vx</span>
+</span><span id="__span-0-43"><a id="__codelineno-0-43" name="__codelineno-0-43" href="#__codelineno-0-43"></a>        <span class="n">y</span> <span class="o">+=</span> <span class="n">vy</span>
+</span><span id="__span-0-44"><a id="__codelineno-0-44" name="__codelineno-0-44" href="#__codelineno-0-44"></a>
+</span><span id="__span-0-45"><a id="__codelineno-0-45" name="__codelineno-0-45" href="#__codelineno-0-45"></a>        <span class="c1"># finally, append the frame to the end of the video</span>
+</span><span id="__span-0-46"><a id="__codelineno-0-46" name="__codelineno-0-46" href="#__codelineno-0-46"></a>        <span class="n">video</span><span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
 </span></code></pre></div>
-<ol>
-<li>Initial x position of the logo</li>
-<li>Initial y position of the logo</li>
-<li>Initial x velocity</li>
-<li>Initial y velocity</li>
-<li>Initial hue for color shifting</li>
-<li>Load the DVD logo image</li>
-<li>Set the height for the logo</li>
-<li>Calculate the aspect ratio</li>
-<li>Calculate the width for the logo</li>
-<li>Resize the logo to the correct size</li>
-<li>Create the base image for each frame</li>
-<li>Calculate the fill color based on the hue</li>
-<li>Create a color layer for the logo</li>
-<li>Paste the colored logo onto the frame</li>
-<li>Play a sound when the logo bounces</li>
-<li>Change the hue on bounce</li>
-<li>Update x position</li>
-<li>Update y position</li>
-<li>Return the frame image</li>
-<li>Create the Video object with the frame function and length</li>
-<li>Preview the video interactively</li>
-<li>
-<p>Render the video to the output path</p>
-<p>total_frames = video.time_to_frame("1m")</p>
-<h1 id="using-richtrack-to-keep-track-of-the-progress-does-a-good-job-of-predicting-eta-usually">using rich.track to keep track of the progress, does a good job of predicting ETA usually</h1>
-<h1 id="keep-in-mind-that-this-only-counts-the-loading-of-the-video-the-audio-comes-afterward-but">keep in mind that this only counts the loading of the video, the audio comes afterward but</h1>
-<h1 id="usually-is-negligable-unless-you-have-a-large-file-with-many-effects">usually is negligable unless you have a large file with many effects</h1>
-<p>for i in track(range(total_frames), "Rendering...", total=total_frames):
-    # initializing the common PIL variables
-    image = Image.new("RGB", (video.width, video.height), "#000000")
-    #draw = ImageDraw.Draw(image) # usually you need this to draw shapes and text, however this example doesnt require it</p>
-<div class="language-text highlight"><pre><span></span><code># adding the dvd image
-# finding the fill color based on the hue, turn it into an image, and use the dvd image as a mask
-fill_color = Image.new(&quot;HSV&quot;, (1, 1), (hue, 200, 220)).convert(&quot;RGB&quot;).getpixel((0, 0))
-color_layer = Image.new(&quot;RGB&quot;, dvd_img.size, fill_color)
-image.paste(color_layer, (x, y), dvd_img.convert(&quot;L&quot;) if dvd_img.mode != &quot;RGBA&quot; else dvd_img.split()[3])
-
-# collision detection
-bumped = False
-if x+vx &gt;= video.width-img_width or x+vx &lt;= 0:
-    vx *= -1
-    bumped = True
-if y+vy &gt;= video.height-img_height or y+vy &lt;= 0:
-    vy *= -1
-    bumped = True
-
-# play a sound effect and shift the hue of the logo on a bump
-if bumped:
-    video.sound(path=&quot;./audio.wav&quot;, at=i)
-    hue = (hue+random.randint(20,60))%255
-
-# position updates
-x += vx
-y += vy
-
-# finally, append the frame to the end of the video
-video.pipe(image)
-</code></pre></div>
-<p>```</p>
-</li>
-</ol>
 
 
 
