@@ -7,7 +7,6 @@ import os
 import shutil
 import cv2
 from PIL import Image
-from rich.progress import track
 
 class Video:
     """fmov.Video
@@ -56,6 +55,15 @@ class Video:
         self.function = function
         self.length = self._parse_length(length)
         self._audio_stamps = []
+
+    def __enter__(self):
+        if self.__process is None:
+            self.__start_render()
+        return self
+    
+    def __exit__(self, exc_type, exc_value, traceback):
+        if self.__process:
+            self.render()
 
     def __start_render(self):
         self.__process = ffmpeg.input(
