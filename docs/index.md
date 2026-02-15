@@ -1,17 +1,16 @@
 # Introduction
 
-**fmov** is a blazing-fast Python library for rendering videos frame-by-frame using `PIL` (Pillow). It combines the simplicity of high-level APIs with the performance of low-level tools like FFmpeg — perfect for generative art, animations, or automated video creation.
+**fmov** is a blazing-fast Python library for rendering videos frame-by-frame using `PIL` (Pillow), `OpenCV` or any other image generation tool (that can be converted to a Numpy array). It combines the simplicity of high-level APIs with the performance of low-level tools like FFmpeg — perfect for generative art, animations, or automated video creation.
 
 ---
 
 ## Features
 
 - **Fast**: Built on FFmpeg for high-performance rendering.
-- **Simple**: Use `PIL.Image` to draw and render.
 - **Scalable**: No confusing flags or unreadable code.
 - **Audio Support**: Register sound effects from within your frame function, at any frame or timestamp.
-- **Interactive Preview**: Scrub, play, and debug your animation before rendering.
 - **Helpful Utilities**: Easy time/frame conversions.
+- **GPU Acceleration**: Optimized commands based on your machine
 - **Modern Pythonic API**: Functional, frame-driven, and context-free.
 
 ---
@@ -22,7 +21,7 @@
 pip install fmov
 ```
 
-You must also have [FFmpeg](https://ffmpeg.org/download.html) installed on your system and available in your PATH.
+***You must also have [FFmpeg](https://ffmpeg.org/download.html) installed on your system and available in your PATH.***
 
 ```bash
 sudo apt install ffmpeg     # Linux
@@ -36,13 +35,24 @@ choco install ffmpeg        # Windows
 
 ```python
 from fmov import Video
-from PIL import Image
+from PIL import Image, ImageDraw
 
-def generate_frame(frame: int, video: Video) -> Image:
-    img = Image.new("RGB", (video.width, video.height), "#000000")
-    return img
+# using 'with Video() as video' makes rendering simpler, as when the context ends it calls render automatically
+with Video(path="video.mp4", width=1920, height=1080, fps=60) as video:
+    total_frames = video.time_to_frame("10s") # turns the timestamp "60s" into the number of frames in the video
 
-video = Video(path="output.mp4", dimensions=(1920, 1080), fps=30, function=generate_frame, length="5s")
-video.preview()  # Interactive preview
-video.save()     # Render to file
+    # create all the frames in the video
+    for i in range(total_frames):
+
+        # PIL stuff, just rendering out the text "Hello World"
+        img = Image.new("RGB", (video.width, video.height), "#000000")
+        draw = ImageDraw.Draw(img)
+
+        draw.text(
+            (100, video.height // 2),
+            f"Hello world! This is frame {i}",
+            fill="#ffffff"
+        )
+
+        video.add(img) # add the frame to the end of the video
 ```
