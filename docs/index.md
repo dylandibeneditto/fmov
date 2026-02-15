@@ -21,9 +21,10 @@
 pip install fmov
 ```
 
-***You must also have [FFmpeg](https://ffmpeg.org/download.html) installed on your system and available in your PATH.***
+!!! warning ""
+    You must also have [FFmpeg](https://ffmpeg.org/download.html) installed on your system and available in your PATH.
 
-```bash
+```bash title="Installing FFmpeg"
 sudo apt install ffmpeg     # Linux
 brew install ffmpeg         # MacOS
 choco install ffmpeg        # Windows
@@ -33,7 +34,7 @@ choco install ffmpeg        # Windows
 
 ## Quick Example
 
-```python
+```py title="hello_world.py"
 from fmov import Video
 from PIL import Image, ImageDraw
 

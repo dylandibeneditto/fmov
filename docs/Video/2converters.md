@@ -9,7 +9,9 @@ video.time_to_frame("2s") # 60
 video.frame_to_seconds(60) # 2
 ```
 
-### `time_to_frame(time: Union(str | int)) -> int`
+---
+
+## `time_to_frame(time: Union(str | int)) -> int`
 
 Returns the frames for a given time code
 
@@ -21,6 +23,8 @@ video.time_to_frame("1m 30s") # 2700
 video.time_to_frame("3h 10m 25s 500ms") # 342765
 video.time_to_frame(10) # 10
 ```
+
+---
 
 ### `frame_to_milliseconds(frame: int) -> int`
 Returns the time in milliseconds that the given frame will begin.

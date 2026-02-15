@@ -99,7 +99,7 @@ class Video:
     #
     # AUDIO / SOUND EFFECTS
     #
-    def audio(self, path: str, at: str | int, volume: float = 1.0) -> None:
+    def audio(self, path: str, at: str | int, volume: float = 0.5) -> None:
         t: int = self.time_to_frame(at)
         self._audio_at_ms(t // int(self.fps * 1000), path, volume)
     
@@ -240,6 +240,10 @@ class Video:
 
     def get_audio_stamps(self) -> list[Audio]:
         return self.__audio_stamps
+
+    def set_vcodec(self, vcodec: str):
+        self.__vcodec = vcodec
+        self.vcodec = get_vcodec_settings(vcodec)
 
     def __repr__(self) -> str:
         return f"fmov.Video({self.width}, {self.height}, {self.fps}, {self.__path})"

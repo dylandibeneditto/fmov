@@ -11,7 +11,7 @@ from fmov import Video
 # Creating the Video
 There are two methods of creating a video. Either creating the video and utilizing it's `Context Manager` or calling `video.render()` manually
 
-=== Context Manager
+=== "Context Manager"
 ```python
 from fmov import Video
 
@@ -20,7 +20,7 @@ with Video("video.mp4") as video:
     for frame in total_frames
         video.add(frame_image)
 ```
-=== Traditional
+=== "Traditional"
 ```python
 from fmov import Video
 
@@ -36,6 +36,19 @@ As you can see, the main difference is in the fact that there is a manual `rende
 ---
 
 # Parameters of the Video Class
+
+```py title="defaults"
+Video(
+    path: str = "./video.mp4",
+    width: int = 1920,
+    height: int = 1080,
+    fps: int = 30,
+    gpu: bool = True,
+    audio_bitrate: str = "192k",
+    log_duration: bool = True,
+)
+
+```
 
 ## `path: str`
 
