@@ -9,7 +9,7 @@ import numpy as np
 from tqdm import tqdm
 
 # using 'with Video() as video' makes rendering simpler, as when the context ends it calls render automatically
-with Video(path="video.mp4", width=1920, height=1080, fps=60) as video:
+with Video(path="video.mp4", width=1920//4, height=1080//4, fps=60) as video:
     total_frames = video.time_to_frame("20s") # turns the timestamp "20s" into the number of frames in the video
 
     # create all the frames in the video (tqdm is a progress bar)
@@ -33,8 +33,3 @@ with Video(path="video.mp4", width=1920, height=1080, fps=60) as video:
 
         video.add(frame) # add the frame to the end of the video
 ```
-
-If you would like to see how to make a significantly more performant video, see the [OpenCV Example](./2opencv.md)
-
-!!! note Note
-    For more about how to create frames with PIL, visit the [PIL documentation](https://pillow.readthedocs.io/en/stable/)
