@@ -7,21 +7,21 @@
 ![GitHub Issues or Pull Requests](https://img.shields.io/github/issues/dylandibeneditto/fmov)
 ![PyPI - License](https://img.shields.io/pypi/l/fmov)
 
-A performant way to create rendered video with Python by leveraging `ffmpeg` and `PIL`.
+The fastest video-creation library in Python. Support for sound effects, `PIL`, and `OpenCV` image generation.
 
 [Documentation](https://dylandibeneditto.github.io/fmov/)
 
-## Rough Benchmarks
+## Rough Benchmarks from [this example](examples/opencv)
 
-| FPS | Resolution | Video Time | Render Time | Video Time / Render Time |
-| --- | ---------- | ---------- | ----------- | --------------- |
-| 1 | 1920x1080 | 30s | 0.381s | 78.74x |
-| 12 | 1920x1080 | 30s | 1.995s | 15.00x |
-| 24 | 1920x1080 | 30s | 3.751s | 8.00x |
-| 30 | 1920x1080 | 30s | 4.541s | 6.60x |
-| 60 | 1920x1080 | 30s | 8.990s | 3.34x |
-| 100 | 1920x1080 | 30s | 14.492s | 2.07x |
-| 120 | 1920x1080 | 30s | 17.960s | 1.67x |
+| FPS | Resolution | Video Time | Render Time |
+| --- | ---------- | ---------- | ----------- |
+| 1 | 1920x1080 | 30s | 0.25s |
+| 12 | 1920x1080 | 30s | 1.74s |
+| 24 | 1920x1080 | 30s | 4.08s |
+| 30 | 1920x1080 | 30s | 4.99s |
+| 60 | 1920x1080 | 30s | 9.64s |
+| 100 | 1920x1080 | 30s | 16.02s |
+| 120 | 1920x1080 | 30s | 19.09s |
 
 ---
 
@@ -50,4 +50,4 @@ choco install ffmpeg        # Windows
 [Downloading FFmpeg](https://ffmpeg.org/download.html)
 
 > [!NOTE]
-> PIL will also be installed with fmov through pip as a dependency. (unless its already installed)
+> `PIL` will be installed automatically, if you would like to use `OpenCV`, install it manually
