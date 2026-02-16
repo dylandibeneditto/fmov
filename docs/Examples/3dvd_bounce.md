@@ -6,8 +6,9 @@
 from PIL import Image
 import random
 from fmov import Video
+from tqdm import tqdm
 
-with Video(path="./video.mp4", (1920,1080), fps=30) as video:
+with Video(path="./video.mp4", width=1920, height=1080, fps=30) as video:
     # position and velocity of the dvd logo
     x,y = (0,0)
     v = 180//video.fps
@@ -18,7 +19,7 @@ with Video(path="./video.mp4", (1920,1080), fps=30) as video:
     # using rich.track to keep track of the progress, does a good job of predicting ETA usually
     # keep in mind that this only counts the loading of the video, the audio comes afterward but
     # usually is negligable unless you have a large file with many effects
-    for i in track(range(total_frames), "Rendering...", total=total_frames):
+    for i in tqdm(range(total_frames), total=total_frames, "Rendering..."):
         # initializing the common PIL variables
         image = Image.new("RGB", (video.width, video.height), "#000000")
         #draw = ImageDraw.Draw(image) # usually you need this to draw shapes and text, however this example doesnt require it
@@ -48,5 +49,5 @@ with Video(path="./video.mp4", (1920,1080), fps=30) as video:
         y += vy
 
         # finally, append the frame to the end of the video
-        video.pipe(image)
+        video.add(image)
 ```

@@ -45,7 +45,7 @@ Video(
     width: int = 1920,
     height: int = 1080,
     fps: int = 30,
-    gpu: bool = True,
+    gpu: bool = False,
     audio_bitrate: str = "192k",
     log_duration: bool = True,
 )
@@ -86,9 +86,12 @@ This describes the frames per second (framerate) of the video.
 
 ## `gpu: bool`
 
-> default is `True`
+> default is `False`
 
 This describes whether `fmov` will try to find a gpu accelerated `vcodec`.
+
+!!! note ""
+    GPU acceleration doesn't really make a difference, and can actually tend to be slower. The bottleneck for speed is the image generation code, as it is running through python. The CPU based codec `libx264` is highly optimized and GPU performance is only necessary in some cases
 
 ---
 
