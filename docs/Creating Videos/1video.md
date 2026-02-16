@@ -12,26 +12,28 @@ from fmov import Video
 There are two methods of creating a video. Either creating the video and utilizing it's `Context Manager` or calling `video.render()` manually
 
 === "Context Manager"
-```python
-from fmov import Video
+    ```python
+    from fmov import Video
 
-with Video("video.mp4") as video:
+    with Video("video.mp4") as video:
 
-    for frame in total_frames
-        video.add(frame_image)
-```
+        for frame in total_frames
+            video.add(frame_image)
+    ```
+
 === "Traditional"
-```python
-from fmov import Video
+    ```python
+    from fmov import Video
 
-video = Video("video.mp4")
+    video = Video("video.mp4")
 
-for frame in total_frames:
-    video.add(frame_image)
+    for frame in total_frames:
+        video.add(frame_image)
 
-video.render()
-```
-As you can see, the main difference is in the fact that there is a manual `render()` call when the video should be written in the **Traditional** example. This may be useful in some cases to have the ability to control
+    video.render()
+    ```
+
+As you can see, the main difference is in the fact that there is a manual `render()` call when the video should be written in the *Traditional* example. There are some cases where it is useful to be able to control when the video renders.
 
 ---
 

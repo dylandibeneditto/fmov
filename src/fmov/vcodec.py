@@ -46,7 +46,7 @@ def get_vcodec_settings(vcodec):
         case "hevc_videotoolbox":
             return {
                 "name": "hevc_videotoolbox",
-                "b:v": "8000000",
+                "b:v": "5000000",
                 "pix_fmt": "yuv420p",
             }
         case "h264_nvenc":
@@ -60,7 +60,7 @@ def get_vcodec_settings(vcodec):
             return {
                 "name": "hevc_nvenc",
                 "preset": "llhq",
-                "b:v": "8000000",
+                "b:v": "5000000",
                 "pix_fmt": "yuv420p",
             }
         case v if "qsv" in v:

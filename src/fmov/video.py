@@ -17,7 +17,7 @@ class Video:
         width: int = 1920,
         height: int = 1080,
         fps: int = 30,
-        gpu: bool = True,
+        gpu: bool = False,
         audio_bitrate: str = "192k",
         log_duration: bool = True,
     ):
@@ -156,28 +156,38 @@ class Video:
 
         image: Image | np.ndarray | bytes | bytearray
         """
-        if isinstance(image, Image):
-            image = np.array(image)
-
         if isinstance(image, np.ndarray):
-            if image.dtype != np.uint8:
-                image = image.astype(np.uint8)
-            if image.ndim == 2:  # grayscale
-                image = np.stack([image]*3, axis=-1)
-            elif image.shape[2] == 4:  # RGBA
-                image = image[:, :, :3]
-            image_bytes = image.tobytes()
 
-        elif isinstance(image, (bytes, bytearray)):
+            if image.dtype != np.uint8:
+                image = image.astype(np.uint8, copy=False)
+
+            if image.ndim == 2:
+                image = np.repeat(image[:, :, None], 3, axis=2)
+
+            elif image.shape[2] == 4:
+                image = image[:, :, :3]
+
+            if not image.flags['C_CONTIGUOUS']:
+                image = np.ascontiguousarray(image)
+
+            image_bytes = memoryview(image)
+
+        elif isinstance(image, Image):
+            image = np.asarray(image)
+            if not image.flags['C_CONTIGUOUS']:
+                image = np.ascontiguousarray(image)
+            image_bytes = memoryview(image)
+
+        elif isinstance(image, (bytes, bytearray, memoryview)):
             image_bytes = image
 
         else:
             raise TypeError(f"Unsupported image object type: {type(image)}")
 
-        if self.__process:
-            self.__process.stdin.write(image_bytes)
-        else:
+        if not self.__process:
             raise ValueError("No process was created to add frames")
+
+        self.__process.stdin.write(image_bytes)
         self.__frame_count += 1
 
     #

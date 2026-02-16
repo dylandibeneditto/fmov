@@ -9,10 +9,11 @@ theme:
   features:
     - content.code.copy
     - content.code.annotate
-    - content.tabs.link
     - navigation.footer
   palette:
-    scheme: slate
+    scheme: 'default'
+    primary: 'black'
+    accent: 'deep orange'
 
 markdown_extensions:
   - attr_list

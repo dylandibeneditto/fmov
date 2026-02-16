@@ -15,7 +15,7 @@ video.frame_to_seconds(60) # 2
 
 Returns the frames for a given time code
 
-```py title="time_codes"
+```py title="Time Codes"
 video = Video(fps=30)
 
 video.time_to_frame("1m") # 1800
@@ -26,11 +26,11 @@ video.time_to_frame(10) # 10
 
 ---
 
-### `frame_to_milliseconds(frame: int) -> int`
+## `frame_to_milliseconds(frame: int) -> int`
 Returns the time in milliseconds that the given frame will begin.
 
-### `frame_to_seconds(frame: int) -> float`
+## `frame_to_seconds(frame: int) -> float`
 Returns the time in seconds that the given frame will begin.
 
-### `frame_to_minutes(frame: int) -> float`
+## `frame_to_minutes(frame: int) -> float`
 Returns the time in minutes that the given frame will begin.
